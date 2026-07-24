@@ -1,0 +1,29 @@
+{
+  "name": "openai-router-2.0",
+  "version": "2.0.0",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "test": "turbo test",
+    "lint": "turbo lint",
+    "format": "prettier --write .",
+    "type-check": "turbo type-check",
+    "deploy": "turbo deploy",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "turbo": "^1.11.3",
+    "typescript": "^5.3.3",
+    "@types/node": "^20.11.5",
+    "prettier": "^3.1.1",
+    "@typescript-eslint/parser": "^6.15.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "eslint": "^8.56.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "engines": {
+    "node": ">=18"
+  }
+}
