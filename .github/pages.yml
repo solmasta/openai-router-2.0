@@ -1,0 +1,4 @@
+name: github-pages
+source:
+  branch: main
+  path: /
