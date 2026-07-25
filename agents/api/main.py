@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from agents.api.session import login, verify_token
 from agents.api.auth import verify_key
 from agents.api.router_bridge import execute_router, router_info
 from agents.api.history import save_execution, get_history
@@ -34,7 +35,7 @@ def execute_request(payload):
 class RouterHandler(BaseHTTPRequestHandler):
 
     def check_auth(self):
-        if not verify_key(self.headers):
+        if not verify_token(self.headers):
             self.send_json({
                 "error": "unauthorized"
             })
