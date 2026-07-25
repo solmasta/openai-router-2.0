@@ -9,7 +9,7 @@
   "scripts": {
     "build:router": "pnpm --filter @openai-router/router build",
     "dev": "turbo dev",
-    "build": "turbo build",
+    "build": "pnpm build:web && pnpm build:router",
     "build:web": "pnpm --filter web build",
     "test": "turbo test",
     "lint": "turbo lint",
