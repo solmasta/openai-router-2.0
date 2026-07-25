@@ -22,7 +22,7 @@ function App() {
   const [data, setData] = useState<Dashboard | null>(null)
 
   useEffect(() => {
-    routerStatus().then(setData)
+    routerStatus().then(setData).catch(console.error)
   }, [])
 
   return (

@@ -14,6 +14,7 @@
     "lint": "turbo lint",
     "format": "prettier --write .",
     "type-check": "turbo type-check",
+    "agent": "python -m agents.api.main",
     "deploy": "turbo deploy",
     "clean": "turbo clean"
   },
