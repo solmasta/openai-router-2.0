@@ -59,6 +59,10 @@ provider)
     python3 "$ROOT/providerctl.py" "${@:2}"
     ;;
 
+doctor)
+    "$ROOT/doctor.sh"
+    ;;
+
 *)
     echo "OpenAI Router 2.0"
     echo ""
