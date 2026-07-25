@@ -1,34 +1,52 @@
-import { useState } from "react"
-import { executeRouter } from "../api/execute"
+import {
+  useState
+} from "react"
+
+import {
+  streamRouter
+} from "../api/stream"
+
 
 export default function Chat() {
-  const [message, setMessage] = useState("")
-  const [response, setResponse] = useState("")
+
+  const [message, setMessage] =
+    useState("")
+
+  const [response, setResponse] =
+    useState("")
+
 
   async function send() {
-    try {
-      const result = await executeRouter(message)
 
-      setResponse(
-        result.response ||
-        result.error ||
-        "No response"
-      )
-    } catch (error) {
-      setResponse(
-        String(error)
-      )
-    }
+    setResponse("")
+
+    await streamRouter(
+      message,
+      chunk => {
+        setResponse(
+          current =>
+            current + chunk
+        )
+      }
+    )
   }
+
 
   return (
     <div className="card">
-      <h2>Router Chat</h2>
+
+      <h2>
+        Router Chat
+      </h2>
 
       <input
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Send a router request"
+        onChange={
+          e => setMessage(
+            e.target.value
+          )
+        }
+        placeholder="Send request..."
       />
 
       <button onClick={send}>
@@ -38,6 +56,7 @@ export default function Chat() {
       <p>
         {response}
       </p>
+
     </div>
   )
 }
