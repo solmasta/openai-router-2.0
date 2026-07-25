@@ -1,18 +1,39 @@
+import { useState } from "react"
+
 import {
   useRouterRefresh
 } from "./hooks/useRouterRefresh"
 
 import "./App.css"
+import Login from "./components/Login"
+
+import { getToken, clearToken } from "./api/session"
 
 import Chat from "./components/Chat"
 import History from "./components/History"
 import ProviderControl from "./components/ProviderControl"
+import Metrics from "./components/Metrics"
 
 
 function App() {
 
+  const [authenticated, setAuthenticated] =
+    useState(
+      Boolean(getToken())
+    )
+
   const data =
     useRouterRefresh(5000)
+
+  if (!authenticated) {
+    return (
+      <Login
+        onLogin={() =>
+          setAuthenticated(true)
+        }
+      />
+    )
+  }
 
 
   return (
@@ -109,6 +130,17 @@ function App() {
       <History />
 
       <ProviderControl />
+
+      <Metrics />
+
+    <button
+        onClick={() => {
+          clearToken()
+          setAuthenticated(false)
+        }}
+      >
+        Logout
+      </button>
 
     </main>
   )
