@@ -79,6 +79,10 @@ update)
     "$ROOT/update.sh"
     ;;
 
+keys)
+    python3 "$ROOT/keyctl.py" "${@:2}"
+    ;;
+
 *)
     echo "OpenAI Router 2.0"
     echo ""
