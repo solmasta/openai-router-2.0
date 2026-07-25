@@ -12,7 +12,8 @@
   "dependencies": {
     "@openai-router/types": "workspace:*",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "@openai-router/router": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^24.13.2",

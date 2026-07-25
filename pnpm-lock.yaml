@@ -32,6 +32,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@openai-router/router':
+        specifier: workspace:*
+        version: link:../../packages/router
       '@openai-router/types':
         specifier: workspace:*
         version: link:../../packages/types
