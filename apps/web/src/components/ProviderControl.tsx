@@ -23,7 +23,8 @@ export default function ProviderControl() {
 
     const response =
       await executeRouter(
-        message
+        message,
+        provider
       )
 
     setResult(
