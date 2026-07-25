@@ -83,6 +83,10 @@ keys)
     python3 "$ROOT/keyctl.py" "${@:2}"
     ;;
 
+limits)
+    python3 "$ROOT/limitctl.py" "${@:2}"
+    ;;
+
 *)
     echo "OpenAI Router 2.0"
     echo ""
