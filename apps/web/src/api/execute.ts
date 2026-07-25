@@ -1,6 +1,10 @@
-const API_URL =
-  import.meta.env.VITE_ROUTER_API_URL ||
-  "http://127.0.0.1:8000"
+import {
+  API_URL
+} from "./client"
+
+import {
+  authHeaders
+} from "./auth"
 
 
 export type ExecuteResponse = {
@@ -24,7 +28,9 @@ export async function executeRouter(
 
         headers: {
           "Content-Type":
-            "application/json"
+            "application/json",
+
+          ...authHeaders()
         },
 
         body: JSON.stringify({
@@ -33,6 +39,7 @@ export async function executeRouter(
         })
       }
     )
+
 
   return response.json()
 }
