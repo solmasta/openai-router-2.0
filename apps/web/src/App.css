@@ -34,3 +34,18 @@ header {
   padding: 10px 20px;
   cursor: pointer;
 }
+
+.executor {
+  margin-top: 30px;
+}
+
+.executor input {
+  width: 70%;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.executor button {
+  padding: 10px 20px;
+  cursor: pointer;
+}
