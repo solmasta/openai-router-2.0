@@ -1,5 +1,8 @@
 export { getStatus } from "./status"
-export { getAgentStatus } from "./agent"
+
+export {
+  getAgentStatus
+} from "./agent"
 
 export {
   getProviders,
@@ -12,9 +15,11 @@ export {
   selectProvider
 } from "./routing"
 
-export { getConfig } from "./config"
+export {
+  getConfig
+} from "./config"
 
 export {
   getOpenAIConfig,
   openAIExecute
-} from "./adapters"
+} from "./adapters/openai"
