@@ -1,17 +1,29 @@
 import { useEffect, useState } from "react"
 import { getDashboardData } from "./api/router"
+import { executeRouter } from "./api/execute"
 import "./App.css"
 
 type Dashboard = Awaited<ReturnType<typeof getDashboardData>>
 
 function App() {
   const [data, setData] = useState<Dashboard | null>(null)
+  const [message, setMessage] = useState("")
+  const [response, setResponse] = useState<string>("")
 
   useEffect(() => {
     getDashboardData()
       .then(setData)
       .catch(console.error)
   }, [])
+
+  async function sendMessage() {
+    if (!message.trim()) return
+
+    const result = await executeRouter(message)
+
+    setResponse(result.response || JSON.stringify(result))
+    setMessage("")
+  }
 
   return (
     <main className="dashboard">
@@ -21,6 +33,7 @@ function App() {
       </header>
 
       <section className="cards">
+
         <div className="card">
           <h2>Router</h2>
           <p>
@@ -49,7 +62,29 @@ function App() {
             </p>
           ))}
         </div>
+
       </section>
+
+      <section className="card executor">
+        <h2>Router Console</h2>
+
+        <input
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Send a message to the router..."
+        />
+
+        <button onClick={sendMessage}>
+          Execute
+        </button>
+
+        {response && (
+          <p>
+            Response: {response}
+          </p>
+        )}
+      </section>
+
     </main>
   )
 }
