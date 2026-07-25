@@ -3,6 +3,7 @@ import json
 from agents.api.session import login, verify_token
 from agents.api.auth import verify_key
 from agents.api.router_bridge import execute_router, router_info
+from agents.api.provider_registry import list_providers
 from agents.api.history import save_execution, get_history
 from agents.api.metrics import record_request, get_metrics
 
@@ -61,13 +62,9 @@ class RouterHandler(BaseHTTPRequestHandler):
             })
 
         elif self.path == "/providers":
-            self.send_json([
-                {
-                    "id": "local",
-                    "name": "Local Provider",
-                    "status": "online"
-                }
-            ])
+            self.send_json(
+                list_providers()
+            )
 
 
         elif self.path == "/history":
@@ -102,8 +99,43 @@ class RouterHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
 
+        if self.path == "/login":
+
+            length = int(
+                self.headers.get(
+                    "Content-Length",
+                    0
+                )
+            )
+
+            body = self.rfile.read(length)
+
+            payload = json.loads(
+                body.decode()
+            )
+
+            token = login(
+                payload.get("username"),
+                payload.get("password")
+            )
+
+            if token:
+                self.send_json({
+                    "success": True,
+                    "token": token
+                })
+            else:
+                self.send_json({
+                    "success": False,
+                    "error": "invalid credentials"
+                })
+
+            return
+
+
         if not self.check_auth():
             return
+
 
         if self.path != "/execute":
             self.send_json({
@@ -111,18 +143,30 @@ class RouterHandler(BaseHTTPRequestHandler):
             })
             return
 
-        length = int(self.headers.get("Content-Length", 0))
+
+        length = int(
+            self.headers.get(
+                "Content-Length",
+                0
+            )
+        )
+
         body = self.rfile.read(length)
 
         try:
-            payload = json.loads(body.decode())
-            self.send_json(execute_request(payload))
+            payload = json.loads(
+                body.decode()
+            )
+
+            self.send_json(
+                execute_request(payload)
+            )
+
         except Exception as e:
             self.send_json({
                 "success": False,
                 "error": str(e)
             })
-
 
 if __name__ == "__main__":
     server = HTTPServer(

@@ -1,36 +1,28 @@
+from agents.api.provider_registry import (
+    get_provider,
+    list_providers
+)
+
+
 def execute_router(
     message: str,
     provider: str | None = None
 ):
 
-    if not provider:
+    selected = provider or "local"
 
-        if "openai" in message.lower():
-            provider = "openai"
+    handler = get_provider(
+        selected
+    )
 
-        elif "mock" in message.lower():
-            provider = "mock"
-
-        else:
-            provider = "local"
-
-
-    providers = {
-        "local": "Local Provider",
-        "mock": "Mock Provider",
-        "openai": "OpenAI Provider"
-    }
-
-
-    selected = providers.get(
-        provider,
-        "Local Provider"
+    return handler(
+        message
     )
 
 
+def router_info():
+
     return {
-        "success": True,
-        "provider": provider,
-        "response":
-            f"{selected} handled: {message}"
+        "name": "openai-router-2.0",
+        "providers": list_providers()
     }
