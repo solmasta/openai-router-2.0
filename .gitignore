@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+apps/*/dist/
+
+# Environment files
+.env
+.env.*
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+
+# Python cache
+__pycache__/
+*.pyc
+node_modules/
+dist/
+apps/*/dist/
+
+.env
+.env.*
+
+*.log
+
+.DS_Store
+
+.vscode/
+.idea/
+
+__pycache__/
+*.pyc
