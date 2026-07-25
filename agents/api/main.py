@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-from .actions import router_state, set_provider, set_mode
+from .actions import get_state, set_provider, set_mode
 
 class RouterHandler(BaseHTTPRequestHandler):
 
@@ -21,7 +21,7 @@ class RouterHandler(BaseHTTPRequestHandler):
             self.send_json({
                 "online": True,
                 "service": "openai-router-agent",
-                **router_state
+                **get_state()
             })
 
         elif path == "/providers":
