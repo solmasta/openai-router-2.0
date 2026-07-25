@@ -15,20 +15,50 @@ export default function Chat() {
   const [response, setResponse] =
     useState("")
 
+  const [status, setStatus] =
+    useState("")
+
+  const [running, setRunning] =
+    useState(false)
+
 
   async function send() {
 
-    setResponse("")
+    if (!message.trim()) {
+      return
+    }
 
-    await streamRouter(
-      message,
-      chunk => {
-        setResponse(
-          current =>
-            current + chunk
-        )
-      }
-    )
+    setResponse("")
+    setStatus("🟢 Streaming response...")
+    setRunning(true)
+
+    try {
+
+      await streamRouter(
+        message,
+        chunk => {
+          setResponse(
+            current =>
+              current + chunk
+          )
+        }
+      )
+
+      setStatus("✅ Complete")
+
+    } catch (error) {
+
+      setStatus("❌ Error")
+
+      setResponse(
+        String(error)
+      )
+
+    } finally {
+
+      setRunning(false)
+
+    }
   }
 
 
@@ -38,6 +68,12 @@ export default function Chat() {
       <h2>
         Router Chat
       </h2>
+
+      <p>
+        Send a request through the router
+        and watch the response arrive live.
+      </p>
+
 
       <input
         value={message}
@@ -49,13 +85,25 @@ export default function Chat() {
         placeholder="Send request..."
       />
 
-      <button onClick={send}>
-        Execute
+
+      <button
+        onClick={send}
+        disabled={running}
+      >
+        {running
+          ? "Running..."
+          : "Execute"}
       </button>
 
+
       <p>
-        {response}
+        {status}
       </p>
+
+
+      <pre>
+        {response}
+      </pre>
 
     </div>
   )
