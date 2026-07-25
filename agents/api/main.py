@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
 from .actions import get_state, set_provider, set_mode
+from .router_bridge import get_route
 
 class RouterHandler(BaseHTTPRequestHandler):
 
@@ -38,6 +39,9 @@ class RouterHandler(BaseHTTPRequestHandler):
                 "online": True,
                 "agent": "assistant"
             })
+
+        elif path == "/route":
+            self.send_json(get_route())
 
         elif path == "/set-provider":
             provider = query.get("name", ["local"])[0]
