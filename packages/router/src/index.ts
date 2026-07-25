@@ -23,3 +23,9 @@ export {
   getOpenAIConfig,
   openAIExecute
 } from "./adapters/openai"
+
+
+export {
+  routerExecute,
+  routerInfo
+} from "./service"
