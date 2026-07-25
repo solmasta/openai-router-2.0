@@ -6,6 +6,23 @@ import {
   executeRouter
 } from "../api/execute"
 
+const providers = [
+  {
+    id: "local",
+    name: "Local Provider",
+    description: "Runs requests through the local router backend."
+  },
+  {
+    id: "mock",
+    name: "Mock Provider",
+    description: "Testing provider for development and debugging."
+  },
+  {
+    id: "openai",
+    name: "OpenAI Provider",
+    description: "External AI provider integration."
+  }
+]
 
 export default function ProviderControl() {
 
@@ -35,6 +52,12 @@ export default function ProviderControl() {
   }
 
 
+  const selected =
+    providers.find(
+      p => p.id === provider
+    )
+
+
   return (
     <div className="card">
 
@@ -42,25 +65,35 @@ export default function ProviderControl() {
         Provider Control
       </h2>
 
+      <p>
+        Select which AI backend receives your test request.
+      </p>
+
+
       <select
         value={provider}
         onChange={
           e => setProvider(e.target.value)
         }
       >
-        <option value="local">
-          Local
-        </option>
 
-        <option value="mock">
-          Mock
-        </option>
-
-        <option value="openai">
-          OpenAI
-        </option>
+        {providers.map(
+          p => (
+            <option
+              key={p.id}
+              value={p.id}
+            >
+              {p.name}
+            </option>
+          )
+        )}
 
       </select>
+
+
+      <p>
+        {selected?.description}
+      </p>
 
 
       <input
@@ -68,18 +101,18 @@ export default function ProviderControl() {
         onChange={
           e => setMessage(e.target.value)
         }
-        placeholder="Message"
+        placeholder="Test router message..."
       />
 
 
       <button onClick={run}>
-        Run
+        Send Test Request
       </button>
 
 
-      <p>
+      <pre>
         {result}
-      </p>
+      </pre>
 
     </div>
   )
