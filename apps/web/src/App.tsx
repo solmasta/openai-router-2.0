@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { getDashboardData } from "./api/router"
 import { executeRouter } from "./api/execute"
 import "./App.css"
+import Chat from "./components/Chat"
 
 type Dashboard = Awaited<ReturnType<typeof getDashboardData>>
 
@@ -65,6 +66,8 @@ function App() {
 
       </section>
 
+      <Chat />
+
       <section className="card executor">
         <h2>Router Console</h2>
 
@@ -84,6 +87,8 @@ function App() {
           </p>
         )}
       </section>
+
+      <Chat />
 
     </main>
   )
