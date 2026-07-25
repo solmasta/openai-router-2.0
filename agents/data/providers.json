@@ -1,0 +1,16 @@
+{
+  "providers": {
+    "openai": {
+      "enabled": true,
+      "priority": 1
+    },
+    "local": {
+      "enabled": true,
+      "priority": 2
+    },
+    "mock": {
+      "enabled": true,
+      "priority": 3
+    }
+  }
+}
