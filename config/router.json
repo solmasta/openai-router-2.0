@@ -12,7 +12,7 @@
       "enabled": true
     },
     "openai": {
-      "enabled": false,
+      "enabled": true,
       "model": "gpt-5-mini"
     }
   }

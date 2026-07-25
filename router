@@ -55,6 +55,10 @@ logs)
     tail -f "$ROOT/router.log"
     ;;
 
+provider)
+    python3 "$ROOT/providerctl.py" "${@:2}"
+    ;;
+
 *)
     echo "OpenAI Router 2.0"
     echo ""
