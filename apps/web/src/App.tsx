@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getRouterStatus, getProviders, getAgentStatus } from './api/router'
+import { setProvider, setMode } from './api/actions'
 import './App.css'
 
 type Dashboard = {
@@ -19,6 +20,14 @@ type Dashboard = {
 }
 
 function App() {
+  async function changeProvider(name: string) {
+    await setProvider(name)
+  }
+
+  async function changeMode(mode: string) {
+    await setMode(mode)
+  }
+
   const [data, setData] = useState<Dashboard | null>(null)
 
   useEffect(() => {
@@ -74,8 +83,21 @@ function App() {
           {data?.providers.map((provider) => (
             <div key={provider.id}>
               {provider.name}: {provider.status}
+              <button onClick={() => changeProvider(provider.id)}>
+                Select
+              </button>
             </div>
           ))}
+        </div>
+
+        <div className="card">
+          <h2>Router Mode</h2>
+          <button onClick={() => changeMode("automatic")}>
+            Automatic
+          </button>
+          <button onClick={() => changeMode("manual")}>
+            Manual
+          </button>
         </div>
       </section>
     </main>
