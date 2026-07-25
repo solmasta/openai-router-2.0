@@ -71,6 +71,10 @@ doctor)
     "$ROOT/doctor.sh"
     ;;
 
+secrets)
+    "$ROOT/secrets.sh" "${@:2}"
+    ;;
+
 *)
     echo "OpenAI Router 2.0"
     echo ""
