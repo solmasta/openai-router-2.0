@@ -1,0 +1,34 @@
+const KEY =
+  "router_session"
+
+
+export function setToken(
+  token: string
+) {
+  localStorage.setItem(
+    KEY,
+    token
+  )
+}
+
+
+export function getToken() {
+
+  return localStorage.getItem(
+    KEY
+  )
+}
+
+
+export function authHeaders() {
+
+  const token =
+    getToken()
+
+  return token
+    ? {
+        Authorization:
+          `Bearer ${token}`
+      }
+    : {}
+}
