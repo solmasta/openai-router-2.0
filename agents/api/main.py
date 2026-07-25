@@ -3,6 +3,7 @@ import json
 from urllib.parse import urlparse, parse_qs
 from .actions import get_state, set_provider, set_mode
 from .router_bridge import get_route
+from .pipeline import execute_request
 
 class RouterHandler(BaseHTTPRequestHandler):
 
@@ -42,6 +43,13 @@ class RouterHandler(BaseHTTPRequestHandler):
 
         elif path == "/route":
             self.send_json(get_route())
+
+        elif path == "/execute":
+            self.send_json(
+                execute_request({
+                    "input": query.get("input", [""])[0]
+                })
+            )
 
         elif path == "/set-provider":
             provider = query.get("name", ["local"])[0]
