@@ -40,6 +40,10 @@ config)
     python3 "$ROOT/configctl.py" "${@:2}"
     ;;
 
+routes)
+    python3 "$ROOT/routectl.py" "${@:2}"
+    ;;
+
 logs)
     tail -f "$ROOT/router.log"
     ;;

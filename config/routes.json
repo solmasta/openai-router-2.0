@@ -1,0 +1,18 @@
+{
+  "default": "local",
+  "rules": {
+    "auto": [
+      "local",
+      "mock",
+      "openai"
+    ],
+    "openai-first": [
+      "openai",
+      "local"
+    ],
+    "local-first": [
+      "local",
+      "openai"
+    ]
+  }
+}
