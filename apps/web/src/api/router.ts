@@ -1,10 +1,13 @@
-import type { RouterStatus, ModelProvider } from '@openai-router/types'
-import { getStatus, getProviders } from '@openai-router/router'
+import {
+  getStatus,
+  getProviders,
+  getAgentStatus,
+} from '@openai-router/router'
 
-export function fetchRouterStatus(): RouterStatus {
-  return getStatus()
-}
-
-export function fetchProviders(): ModelProvider[] {
-  return getProviders()
+export async function routerStatus() {
+  return {
+    router: getStatus(),
+    providers: getProviders(),
+    agent: await getAgentStatus(),
+  }
 }

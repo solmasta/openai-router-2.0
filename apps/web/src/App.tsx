@@ -1,46 +1,72 @@
-import { fetchProviders, fetchRouterStatus } from './api/router'
+import { useEffect, useState } from 'react'
+import { routerStatus } from './api/router'
 import './App.css'
 
+type Dashboard = {
+  router: {
+    online: boolean
+    activeProvider?: string
+  }
+  providers: Array<{
+    id: string
+    name: string
+    status: string
+  }>
+  agent: {
+    online: boolean
+    agent: string
+  }
+}
+
 function App() {
-  const router = fetchRouterStatus()
-  const providers = fetchProviders()
+  const [data, setData] = useState<Dashboard | null>(null)
+
+  useEffect(() => {
+    routerStatus().then(setData)
+  }, [])
 
   return (
-    <main className="app">
-      <header className="header">
+    <main className="dashboard">
+      <header>
         <h1>OpenAI Router 2.0</h1>
-        <p>AI infrastructure dashboard</p>
+        <p>AI routing control center</p>
       </header>
 
-      <section className="card">
-        <h2>Router</h2>
-        <p>
-          Status: {router.online ? 'Online' : 'Offline'}
-        </p>
-        <p>
-          Provider: {router.activeProvider ?? 'None'}
-        </p>
-      </section>
+      <section className="cards">
+        <div className="card">
+          <h2>Router</h2>
+          <p>
+            Status:{' '}
+            <strong>
+              {data?.router.online ? 'Online' : 'Offline'}
+            </strong>
+          </p>
+          <p>
+            Provider: {data?.router.activeProvider ?? 'loading'}
+          </p>
+        </div>
 
-      <section className="card">
-        <h2>Available Providers</h2>
+        <div className="card">
+          <h2>Agent</h2>
+          <p>
+            Status:{' '}
+            <strong>
+              {data?.agent.online ? 'Online' : 'Offline'}
+            </strong>
+          </p>
+          <p>
+            Name: {data?.agent.agent ?? 'loading'}
+          </p>
+        </div>
 
-        {providers.length === 0 ? (
-          <p>No providers configured</p>
-        ) : (
-          <ul>
-            {providers.map((provider) => (
-              <li key={provider.id}>
-                {provider.name} ({provider.status})
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <section className="card">
-        <h2>Agent</h2>
-        <p>Agent interface ready for connection.</p>
+        <div className="card">
+          <h2>Providers</h2>
+          {data?.providers.map((provider) => (
+            <div key={provider.id}>
+              {provider.name}: {provider.status}
+            </div>
+          ))}
+        </div>
       </section>
     </main>
   )
