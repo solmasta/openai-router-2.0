@@ -32,6 +32,10 @@ backup)
     "$ROOT/scripts/backup.sh"
     ;;
 
+deploy)
+    "$ROOT/scripts/deploy.sh"
+    ;;
+
 logs)
     tail -f "$ROOT/router.log"
     ;;
