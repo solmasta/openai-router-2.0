@@ -22,5 +22,26 @@
     "message": "frontend streaming test",
     "provider": "local",
     "response": "Local provider handled: frontend streaming test"
+  },
+  {
+    "time": "2026-07-25T22:27:54.210777",
+    "message": "history test",
+    "provider": "local",
+    "response": "Local provider handled: history test"
+  },
+  {
+    "time": "2026-07-25T22:32:38.796708",
+    "message": "automatic routing test",
+    "provider": "local",
+    "response": {
+      "provider": "local",
+      "response": "Local provider handled: automatic routing test"
+    }
+  },
+  {
+    "time": "2026-07-25T22:33:23.617365",
+    "message": "automatic routing test",
+    "provider": "local",
+    "response": "Local provider handled: automatic routing test"
   }
 ]
