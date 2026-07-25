@@ -1,0 +1,62 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+
+case "$1" in
+
+start)
+    echo "Starting OpenAI Router..."
+
+    pkill -f "agents.api.main" || true
+
+    cd "$ROOT"
+
+    python -m agents.api.main > router.log 2>&1 &
+
+    sleep 2
+
+    echo "API:"
+    curl -s http://127.0.0.1:8000/status
+
+    echo ""
+    echo "Starting dashboard..."
+
+    pnpm --filter web dev --host
+    ;;
+
+stop)
+    echo "Stopping OpenAI Router..."
+
+    pkill -f "agents.api.main" || true
+    pkill -f "vite" || true
+
+    echo "Stopped"
+    ;;
+
+restart)
+    "$0" stop
+    sleep 2
+    "$0" start
+    ;;
+
+status)
+    echo "Router status:"
+    curl -s http://127.0.0.1:8000/status || echo "Offline"
+    ;;
+
+logs)
+    tail -f "$ROOT/router.log"
+    ;;
+
+*)
+    echo "OpenAI Router 2.0"
+    echo ""
+    echo "Commands:"
+    echo "  router start"
+    echo "  router stop"
+    echo "  router restart"
+    echo "  router status"
+    echo "  router logs"
+    ;;
+
+esac
