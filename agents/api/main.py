@@ -6,6 +6,7 @@ from agents.api.router_bridge import execute_router, router_info
 from agents.api.provider_registry import list_providers
 from agents.api.history import save_execution, get_history
 from agents.api.metrics import record_request, get_metrics
+from agents.api.streaming import stream_text
 
 
 from agents.router.client import execute_route
@@ -97,6 +98,27 @@ class RouterHandler(BaseHTTPRequestHandler):
                 "error": "not found"
             })
 
+    def do_stream(self, text):
+
+        self.send_response(200)
+        self.send_header(
+            "Content-Type",
+            "text/plain; charset=utf-8"
+        )
+        self.send_header(
+            "Cache-Control",
+            "no-cache"
+        )
+        self.end_headers()
+
+        for chunk in stream_text(text):
+            self.wfile.write(
+                chunk.encode()
+            )
+            self.wfile.flush()
+
+
+
     def do_POST(self):
 
         if self.path == "/login":
@@ -134,6 +156,33 @@ class RouterHandler(BaseHTTPRequestHandler):
 
 
         if not self.check_auth():
+            return
+
+
+        if self.path == "/execute/stream":
+
+            length = int(
+                self.headers.get(
+                    "Content-Length",
+                    0
+                )
+            )
+
+            body = self.rfile.read(length)
+
+            payload = json.loads(
+                body.decode()
+            )
+
+            result = execute_request(payload)
+
+            self.do_stream(
+                result.get(
+                    "response",
+                    ""
+                )
+            )
+
             return
 
 
