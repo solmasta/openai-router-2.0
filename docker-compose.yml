@@ -1,0 +1,12 @@
+services:
+  router:
+    build: .
+    container_name: openai-router-2.0
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DEFAULT_PROVIDER=local
+    restart: unless-stopped
