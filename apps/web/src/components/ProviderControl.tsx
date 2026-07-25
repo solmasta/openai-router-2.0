@@ -8,8 +8,13 @@ import {
 
 const providers = [
   {
+    id: "auto",
+    name: "🚀 Auto Routing",
+    description: "Router selects the healthiest available provider."
+  },
+  {
     id: "local",
-    name: "Local Provider",
+    name: "🟢 Local Provider",
     description: "Runs requests through the local router backend."
   },
   {
@@ -35,6 +40,9 @@ export default function ProviderControl() {
   const [result, setResult] =
     useState("")
 
+  const [route, setRoute] =
+    useState("")
+
 
   async function run() {
 
@@ -48,6 +56,12 @@ export default function ProviderControl() {
       response.response ||
       response.error ||
       ""
+    )
+
+    setRoute(
+      response.route
+        ? `Mode: ${response.route} | Provider: ${response.provider}`
+        : ""
     )
   }
 
@@ -109,6 +123,10 @@ export default function ProviderControl() {
         Send Test Request
       </button>
 
+
+      <p>
+        {route}
+      </p>
 
       <pre>
         {result}
