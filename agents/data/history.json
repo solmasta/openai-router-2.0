@@ -1,0 +1,26 @@
+[
+  {
+    "time": "2026-07-25T20:29:30.844820",
+    "message": "route this through openai",
+    "provider": "openai",
+    "response": "openai routed message: route this through openai"
+  },
+  {
+    "time": "2026-07-25T21:02:03.876273",
+    "message": "hello router",
+    "provider": "local",
+    "response": "Local provider handled: hello router"
+  },
+  {
+    "time": "2026-07-25T21:09:06.411709",
+    "message": "hello streaming router",
+    "provider": "local",
+    "response": "Local provider handled: hello streaming router"
+  },
+  {
+    "time": "2026-07-25T21:16:16.684805",
+    "message": "frontend streaming test",
+    "provider": "local",
+    "response": "Local provider handled: frontend streaming test"
+  }
+]

@@ -1,0 +1,13 @@
+
+> openai-router-2.0@2.0.0 build:web /data/data/com.termux/files/home/openai-router-2.0
+> pnpm --filter web build
+
+
+> web@0.0.0 build /data/data/com.termux/files/home/openai-router-2.0/apps/web
+> tsc -b && vite build
+
+src/App.tsx(5,18): error TS2307: Cannot find module './components/Chat' or its corresponding type declarations.
+/data/data/com.termux/files/home/openai-router-2.0/apps/web:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  web@0.0.0 build: `tsc -b && vite build`
+Exit status 2
+ ELIFECYCLE  Command failed with exit code 1.

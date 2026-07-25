@@ -6,7 +6,17 @@ import {
 export function selectProvider(
   message: string
 ) {
-  const text = message.toLowerCase()
+  const text =
+    message.toLowerCase()
+
+
+  if (text.includes("openai")) {
+    return {
+      provider: "openai",
+      reason: "OpenAI keyword detected"
+    }
+  }
+
 
   if (text.includes("mock")) {
     return {
@@ -14,6 +24,7 @@ export function selectProvider(
       reason: "Mock keyword detected"
     }
   }
+
 
   return {
     provider: "local",
@@ -25,14 +36,17 @@ export function selectProvider(
 export async function routeMessage(
   message: string
 ) {
-  const decision = selectProvider(message)
+  const decision =
+    selectProvider(message)
+
 
   return {
     provider: decision.provider,
     reason: decision.reason,
-    response: await executeProvider(
-      decision.provider,
-      message
-    )
+    response:
+      await executeProvider(
+        decision.provider,
+        message
+      )
   }
 }

@@ -1,10 +1,16 @@
 {
   "name": "@openai-router/router",
-  "version": "1.0.0",
-  "private": true,
+  "version": "2.0.0",
   "type": "module",
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
   "dependencies": {
     "@openai-router/types": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
   }
 }

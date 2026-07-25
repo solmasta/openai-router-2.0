@@ -9,6 +9,8 @@ import Chat from "./components/Chat"
 import History from "./components/History"
 import ProviderControl from "./components/ProviderControl"
 import Metrics from "./components/Metrics"
+import InsightCard from "./components/InsightCard"
+
 
 
 function App() {
@@ -16,12 +18,10 @@ function App() {
   const data =
     useRouterRefresh(5000)
 
-
   return (
-
     <main className="dashboard">
 
-      <header>
+      <header className="hero">
         <h1>
           OpenAI Router 2.0
         </h1>
@@ -29,17 +29,21 @@ function App() {
         <p>
           AI routing control center
         </p>
+
+        <p className="description">
+          Manage AI providers, test routing,
+          monitor agents, and observe system health
+          from one dashboard.
+        </p>
       </header>
 
 
       <section className="cards">
 
-        <div className="card">
-
-          <h2>
-            Router
-          </h2>
-
+        <InsightCard
+          title="Router"
+          description="The router decides where AI requests are sent. It manages provider selection and request flow."
+        >
           <p>
             Status:
             {" "}
@@ -54,16 +58,13 @@ function App() {
             {data?.router.service ??
               "loading"}
           </p>
+        </InsightCard>
 
-        </div>
 
-
-        <div className="card">
-
-          <h2>
-            Agent
-          </h2>
-
+        <InsightCard
+          title="Agent"
+          description="Agents are automated workers that execute tasks through the routing system."
+        >
           <p>
             Status:
             {" "}
@@ -78,48 +79,69 @@ function App() {
             {data?.agent.agent ??
               "loading"}
           </p>
+        </InsightCard>
 
-        </div>
 
-
-        <div className="card">
-
-          <h2>
-            Providers
-          </h2>
-
-          {data?.providers.map(
-            (provider) => (
-
-              <p key={provider.id}>
-                {provider.name}
-                :
-                {" "}
-                {provider.status}
+        <InsightCard
+          title="Providers"
+          description="Providers are AI backends available to handle requests."
+        >
+          {data?.providers?.length
+            ? data.providers.map(
+                provider => (
+                  <p key={provider.id}>
+                    {provider.name}
+                    {" "}
+                    -
+                    {" "}
+                    {provider.status}
+                  </p>
+                )
+              )
+            :
+              <p>
+                No providers detected
               </p>
-
-            )
-          )}
-
-        </div>
+          }
+        </InsightCard>
 
       </section>
 
 
-      <Chat />
+      <InsightCard
+        title="Router Chat"
+        description="Send a test request through the router to verify your AI pipeline."
+      >
+        <Chat />
+      </InsightCard>
 
-      <History />
 
-      <ProviderControl />
+      <InsightCard
+        title="Execution History"
+        description="Review previous requests and responses for debugging and auditing."
+      >
+        <History />
+      </InsightCard>
 
-      <Metrics />
+
+      <InsightCard
+        title="Provider Control"
+        description="Choose which AI provider receives a test request."
+      >
+        <ProviderControl />
+      </InsightCard>
 
 
+      <InsightCard
+        title="Metrics"
+        description="Monitor usage, uptime, and system activity."
+      >
+        <Metrics />
+      </InsightCard>
 
 
     </main>
   )
 }
-
 
 export default App

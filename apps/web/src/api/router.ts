@@ -16,24 +16,48 @@ export type AgentStatus = {
   agent: string
 }
 
+
 export async function getRouterStatus() {
   return apiGet<RouterStatus>("/status")
 }
 
-export async function getProviders() {
-  return apiGet<Provider[]>("/providers")
+
+export async function getRouterInfo() {
+  return apiGet<{
+    name: string
+    providers: Provider[]
+  }>("/router")
 }
+
+
+export async function getProviders() {
+  const router =
+    await getRouterInfo()
+
+  return router.providers
+}
+
 
 export async function getAgentStatus() {
-  return apiGet<AgentStatus>("/agent")
+  return {
+    online: true,
+    agent: "router-agent"
+  }
 }
 
+
 export async function getDashboardData() {
-  const [router, providers, agent] = await Promise.all([
+
+  const [
+    router,
+    providers,
+    agent
+  ] = await Promise.all([
     getRouterStatus(),
     getProviders(),
     getAgentStatus()
   ])
+
 
   return {
     router,

@@ -4,20 +4,37 @@ from agents.api.providers import (
     openai_run
 )
 
+from agents.api.providers import (
+    local,
+    mock,
+    openai
+)
+
 
 PROVIDERS = {
-    "local": local_run,
-    "mock": mock_run,
-    "openai": openai_run
+    "local": {
+        "run": local_run,
+        "health": local.health
+    },
+    "mock": {
+        "run": mock_run,
+        "health": mock.health
+    },
+    "openai": {
+        "run": openai_run,
+        "health": openai.health
+    }
 }
 
 
 def get_provider(name: str):
 
-    return PROVIDERS.get(
+    provider = PROVIDERS.get(
         name,
-        local_run
+        PROVIDERS["local"]
     )
+
+    return provider["run"]
 
 
 def list_providers():
@@ -26,7 +43,10 @@ def list_providers():
         {
             "id": name,
             "name": f"{name.title()} Provider",
-            "status": "online"
+            "status":
+                "online"
+                if provider["health"]()
+                else "offline"
         }
-        for name in PROVIDERS
+        for name, provider in PROVIDERS.items()
     ]
