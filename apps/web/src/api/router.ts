@@ -1,16 +1,43 @@
-const API_URL =
-  import.meta.env.VITE_ROUTER_API || "http://127.0.0.1:8000"
+import { apiGet } from "./client"
 
-export async function routerStatus() {
-  const [status, providers, agent] = await Promise.all([
-    fetch(`${API_URL}/status`).then(r => r.json()),
-    fetch(`${API_URL}/providers`).then(r => r.json()),
-    fetch(`${API_URL}/agent`).then(r => r.json()),
+export type RouterStatus = {
+  online: boolean
+  service: string
+}
+
+export type Provider = {
+  id: string
+  name: string
+  status: string
+}
+
+export type AgentStatus = {
+  online: boolean
+  agent: string
+}
+
+export async function getRouterStatus() {
+  return apiGet<RouterStatus>("/status")
+}
+
+export async function getProviders() {
+  return apiGet<Provider[]>("/providers")
+}
+
+export async function getAgentStatus() {
+  return apiGet<AgentStatus>("/agent")
+}
+
+export async function getDashboardData() {
+  const [router, providers, agent] = await Promise.all([
+    getRouterStatus(),
+    getProviders(),
+    getAgentStatus()
   ])
 
   return {
-    router: status,
+    router,
     providers,
-    agent,
+    agent
   }
 }
