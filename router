@@ -75,6 +75,10 @@ secrets)
     "$ROOT/secrets.sh" "${@:2}"
     ;;
 
+update)
+    "$ROOT/update.sh"
+    ;;
+
 *)
     echo "OpenAI Router 2.0"
     echo ""
