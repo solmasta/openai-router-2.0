@@ -1,12 +1,14 @@
 import type { ModelProvider } from "@openai-router/types"
 import { getConfig } from "./config"
+import { openAIExecute } from "./adapters/openai"
+
 
 export type RuntimeProvider = ModelProvider & {
   execute(message: string): Promise<string>
 }
 
 
-const allProviders: RuntimeProvider[] = [
+const providers: RuntimeProvider[] = [
 
   {
     id: "local",
@@ -18,6 +20,7 @@ const allProviders: RuntimeProvider[] = [
     }
   },
 
+
   {
     id: "mock",
     name: "Mock AI Provider",
@@ -25,6 +28,20 @@ const allProviders: RuntimeProvider[] = [
 
     async execute(message: string) {
       return `Mock provider response: ${message}`
+    }
+  },
+
+
+  {
+    id: "openai",
+    name: "OpenAI Provider",
+    status: "online",
+
+    async execute(message: string) {
+      const result =
+        await openAIExecute(message)
+
+      return result.response
     }
   }
 
@@ -34,17 +51,18 @@ const allProviders: RuntimeProvider[] = [
 export function getRuntimeProviders() {
   const config = getConfig()
 
-  return allProviders.filter(provider => {
-    if (
-      provider.id === "local"
-    ) {
+  return providers.filter(provider => {
+
+    if (provider.id === "local") {
       return config.localEnabled
     }
 
-    if (
-      provider.id === "mock"
-    ) {
+    if (provider.id === "mock") {
       return config.mockEnabled
+    }
+
+    if (provider.id === "openai") {
+      return true
     }
 
     return false
