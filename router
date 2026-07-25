@@ -36,6 +36,10 @@ deploy)
     "$ROOT/scripts/deploy.sh"
     ;;
 
+config)
+    python3 "$ROOT/configctl.py" "${@:2}"
+    ;;
+
 logs)
     tail -f "$ROOT/router.log"
     ;;

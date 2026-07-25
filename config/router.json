@@ -1,19 +1,8 @@
 {
-  "router": {
-    "host": "127.0.0.1",
-    "port": 8000,
-    "default_provider": "local"
-  },
-  "providers": {
-    "local": {
-      "enabled": true
-    },
-    "mock": {
-      "enabled": true
-    },
-    "openai": {
-      "enabled": true,
-      "model": "gpt-5-mini"
-    }
-  }
+  "default_provider": "openai",
+  "auto_routing": true,
+  "streaming": true,
+  "history": true,
+  "metrics": true,
+  "dashboard": true
 }
