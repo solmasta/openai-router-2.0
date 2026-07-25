@@ -1,23 +1,19 @@
 # OpenAI Router 2.0
 
-A flexible routing layer for OpenAI-compatible AI services.
+A flexible AI routing control center for managing providers, executing requests, and monitoring AI services through a unified interface.
 
 ## Overview
 
-OpenAI Router 2.0 provides a unified interface for managing AI requests across different models and providers. The goal is to simplify application development by allowing systems to route requests through a consistent API layer.
+OpenAI Router 2.0 provides a routing layer between applications and AI providers. It allows requests to be sent through a consistent API while supporting multiple backends through an extensible provider system.
 
-## Features
+The project includes:
 
-- OpenAI-compatible API interface
-- Model and provider routing
-- Centralized AI request management
-- Extensible architecture
-- Simple integration with existing applications
+- Python routing agent
+- Provider registry and health checks
+- Streaming request execution
+- React dashboard
+- Provider controls and metrics
 
-## Getting Started
+## Architecture
 
-### Clone the repository
 
-```bash
-git clone https://github.com/solmasta/openai-router-2.0.git
-cd openai-router-2.0
