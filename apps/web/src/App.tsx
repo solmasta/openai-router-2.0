@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { routerStatus } from './api/router'
+import { getRouterStatus, getProviders, getAgentStatus } from './api/router'
 import './App.css'
 
 type Dashboard = {
@@ -22,7 +22,17 @@ function App() {
   const [data, setData] = useState<Dashboard | null>(null)
 
   useEffect(() => {
-    routerStatus().then(setData).catch(console.error)
+    Promise.all([
+  getRouterStatus(),
+  getProviders(),
+  getAgentStatus(),
+]).then(([router, providers, agent]) => {
+  setData({
+    router,
+    providers,
+    agent,
+  })
+}).catch(console.error)
   }, [])
 
   return (
