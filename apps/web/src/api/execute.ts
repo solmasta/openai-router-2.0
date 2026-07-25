@@ -1,45 +1,24 @@
-import {
-  API_URL
-} from "./client"
+import { authHeaders } from "./session"
 
-import {
-  authHeaders
-} from "./auth"
+const API_URL =
+  import.meta.env.VITE_ROUTER_API_URL ||
+  "http://127.0.0.1:8000"
 
+export async function executeRouter(message: string) {
 
-export type ExecuteResponse = {
-  success: boolean
-  provider?: string
-  response?: string
-  error?: string
-}
-
-
-export async function executeRouter(
-  message: string,
-  provider?: string
-): Promise<ExecuteResponse> {
-
-  const response =
-    await fetch(
-      `${API_URL}/execute`,
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type":
-            "application/json",
-
-          ...authHeaders()
-        },
-
-        body: JSON.stringify({
-          message,
-          provider
-        })
-      }
-    )
-
+  const response = await fetch(
+    `${API_URL}/execute`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeaders()
+      } as HeadersInit,
+      body: JSON.stringify({
+        message
+      })
+    }
+  )
 
   return response.json()
 }

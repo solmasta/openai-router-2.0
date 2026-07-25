@@ -3,13 +3,11 @@ import os
 
 
 USERNAME = os.getenv(
-    "ROUTER_USER",
-    "admin"
+    "ROUTER_USER"
 )
 
 PASSWORD = os.getenv(
-    "ROUTER_PASSWORD",
-    "admin"
+    "ROUTER_PASSWORD"
 )
 
 

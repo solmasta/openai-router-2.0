@@ -133,6 +133,15 @@ function App() {
 
       <Metrics />
 
+      <button
+        onClick={() => {
+          clearToken()
+          setAuthenticated(false)
+        }}
+      >
+        Logout
+      </button>
+
     <button
         onClick={() => {
           clearToken()
