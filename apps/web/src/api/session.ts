@@ -20,6 +20,14 @@ export function getToken() {
 }
 
 
+export function clearToken() {
+
+  localStorage.removeItem(
+    KEY
+  )
+}
+
+
 export function authHeaders() {
 
   const token =
