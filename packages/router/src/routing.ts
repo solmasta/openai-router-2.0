@@ -1,23 +1,23 @@
-import { getProvider } from "./providers"
+import {
+  executeProvider
+} from "./providers"
 
-export type RouteDecision = {
-  provider: string
-  reason: string
-}
 
-export function selectProvider(message: string): RouteDecision {
+export function selectProvider(
+  message: string
+) {
   const text = message.toLowerCase()
 
-  if (text.includes("local")) {
+  if (text.includes("mock")) {
     return {
-      provider: "local",
-      reason: "Explicit local request"
+      provider: "mock",
+      reason: "Mock keyword detected"
     }
   }
 
   return {
     provider: "local",
-    reason: "Default provider selection"
+    reason: "Default routing rule"
   }
 }
 
@@ -27,19 +27,12 @@ export async function routeMessage(
 ) {
   const decision = selectProvider(message)
 
-  const provider = getProvider(
-    decision.provider
-  )
-
-  if (!provider) {
-    throw new Error(
-      `No provider available: ${decision.provider}`
-    )
-  }
-
   return {
-    provider: provider.id,
+    provider: decision.provider,
     reason: decision.reason,
-    response: `Local provider response: ${message}`
+    response: await executeProvider(
+      decision.provider,
+      message
+    )
   }
 }
