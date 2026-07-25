@@ -3,6 +3,8 @@ import { getDashboardData } from "./api/router"
 import { executeRouter } from "./api/execute"
 import "./App.css"
 import Chat from "./components/Chat"
+import History from "./components/History"
+import ProviderControl from "./components/ProviderControl"
 
 type Dashboard = Awaited<ReturnType<typeof getDashboardData>>
 
@@ -68,6 +70,10 @@ function App() {
 
       <Chat />
 
+      <History />
+
+      <ProviderControl />
+
       <section className="card executor">
         <h2>Router Console</h2>
 
@@ -89,6 +95,10 @@ function App() {
       </section>
 
       <Chat />
+
+      <History />
+
+      <ProviderControl />
 
     </main>
   )

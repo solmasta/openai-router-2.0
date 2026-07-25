@@ -12,7 +12,8 @@ export type ExecuteResponse = {
 
 
 export async function executeRouter(
-  message: string
+  message: string,
+  provider?: string
 ): Promise<ExecuteResponse> {
 
   const response =
@@ -27,7 +28,8 @@ export async function executeRouter(
         },
 
         body: JSON.stringify({
-          message
+          message,
+          provider
         })
       }
     )
