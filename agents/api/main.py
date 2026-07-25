@@ -1,7 +1,9 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from agents.api.auth import verify_key
 from agents.api.router_bridge import execute_router, router_info
 from agents.api.history import save_execution, get_history
+from agents.api.metrics import record_request, get_metrics
 
 
 from agents.router.client import execute_route
@@ -9,8 +11,12 @@ from agents.router.client import execute_route
 
 def execute_request(payload):
     message = payload.get("message", "")
+    provider = payload.get("provider")
 
-    result = execute_router(message)
+    result = execute_router(
+        message,
+        provider
+    )
 
     save_execution(
         message,
@@ -18,10 +24,24 @@ def execute_request(payload):
         result.get("response")
     )
 
+    record_request(
+        result.get("provider")
+    )
+
     return result
 
 
 class RouterHandler(BaseHTTPRequestHandler):
+
+    def check_auth(self):
+        if not verify_key(self.headers):
+            self.send_json({
+                "error": "unauthorized"
+            })
+            return False
+
+        return True
+
 
     def send_json(self, data):
         body = json.dumps(data).encode()
@@ -59,6 +79,15 @@ class RouterHandler(BaseHTTPRequestHandler):
                 router_info()
             )
 
+        elif self.path == "/metrics":
+
+            if not self.check_auth():
+                return
+
+            self.send_json(
+                get_metrics()
+            )
+
         elif self.path == "/agent":
             self.send_json({
                 "online": True,
@@ -71,6 +100,10 @@ class RouterHandler(BaseHTTPRequestHandler):
             })
 
     def do_POST(self):
+
+        if not self.check_auth():
+            return
+
         if self.path != "/execute":
             self.send_json({
                 "error": "not found"

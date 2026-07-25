@@ -1,34 +1,36 @@
-import json
-import subprocess
+def execute_router(
+    message: str,
+    provider: str | None = None
+):
+
+    if not provider:
+
+        if "openai" in message.lower():
+            provider = "openai"
+
+        elif "mock" in message.lower():
+            provider = "mock"
+
+        else:
+            provider = "local"
 
 
-def execute_router(message: str):
+    providers = {
+        "local": "Local Provider",
+        "mock": "Mock Provider",
+        "openai": "OpenAI Provider"
+    }
 
-    if "openai" in message.lower():
-        provider = "openai"
 
-    elif "mock" in message.lower():
-        provider = "mock"
-
-    else:
-        provider = "local"
+    selected = providers.get(
+        provider,
+        "Local Provider"
+    )
 
 
     return {
         "success": True,
         "provider": provider,
         "response":
-            f"{provider} routed message: {message}"
-    }
-
-
-def router_info():
-
-    return {
-        "online": True,
-        "providers": [
-            "local",
-            "mock",
-            "openai"
-        ]
+            f"{selected} handled: {message}"
     }
