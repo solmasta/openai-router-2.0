@@ -11,3 +11,10 @@ export {
   routeMessage,
   selectProvider
 } from "./routing"
+
+export { getConfig } from "./config"
+
+export {
+  getOpenAIConfig,
+  openAIExecute
+} from "./adapters"
