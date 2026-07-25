@@ -1,7 +1,27 @@
 from agents.api.provider_registry import (
     get_provider,
-    list_providers
+    list_providers,
+    PROVIDERS
 )
+
+
+def choose_provider():
+
+    # Preferred order
+    priority = [
+        "openai",
+        "local",
+        "mock"
+    ]
+
+    for name in priority:
+
+        provider = PROVIDERS.get(name)
+
+        if provider and provider["health"]():
+            return name
+
+    return "local"
 
 
 def execute_router(
@@ -9,15 +29,26 @@ def execute_router(
     provider: str | None = None
 ):
 
-    selected = provider or "local"
+    selected = provider
+
+    if not selected or selected == "auto":
+        selected = choose_provider()
 
     handler = get_provider(
         selected
     )
 
-    return handler(
+    result = handler(
         message
     )
+
+    return {
+        "provider": selected,
+        "response": result,
+        "route": "auto"
+            if provider == "auto"
+            else "manual"
+    }
 
 
 def router_info():
