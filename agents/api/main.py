@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from agents.api.router_bridge import execute_router
+from agents.api.history import save_execution, get_history
 
 
 from agents.router.client import execute_route
@@ -9,7 +10,15 @@ from agents.router.client import execute_route
 def execute_request(payload):
     message = payload.get("message", "")
 
-    return execute_router(message)
+    result = execute_router(message)
+
+    save_execution(
+        message,
+        result.get("provider"),
+        result.get("response")
+    )
+
+    return result
 
 
 class RouterHandler(BaseHTTPRequestHandler):
@@ -38,6 +47,12 @@ class RouterHandler(BaseHTTPRequestHandler):
                     "status": "online"
                 }
             ])
+
+
+        elif self.path == "/history":
+            self.send_json(
+                get_history()
+            )
 
         elif self.path == "/agent":
             self.send_json({
