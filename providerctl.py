@@ -4,51 +4,82 @@ import json
 import sys
 from pathlib import Path
 
-CONFIG = Path("config/router.json")
+FILE = Path("config/providers.json")
+
+
+DEFAULT = {
+    "local": {
+        "enabled": True,
+        "priority": 1
+    },
+    "mock": {
+        "enabled": True,
+        "priority": 2
+    },
+    "openai": {
+        "enabled": True,
+        "priority": 3
+    }
+}
+
 
 def load():
-    return json.loads(CONFIG.read_text())
+    if not FILE.exists():
+        FILE.parent.mkdir(exist_ok=True)
+        save(DEFAULT)
+
+    return json.loads(FILE.read_text())
+
 
 def save(data):
-    CONFIG.write_text(json.dumps(data, indent=2))
+    FILE.write_text(
+        json.dumps(data, indent=2)
+    )
 
-config = load()
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 2:
     print("""
-Usage:
+providers commands:
 
-providerctl list
-providerctl enable <name>
-providerctl disable <name>
-providerctl model <name> <model>
+providers list
+providers enable NAME
+providers disable NAME
+providers health
 """)
     exit()
 
+
 cmd = sys.argv[1]
 
+providers = load()
+
+
 if cmd == "list":
-    for name, data in config["providers"].items():
-        print(
-            name,
-            "enabled=" + str(data.get("enabled"))
-        )
+    print(json.dumps(providers, indent=2))
+
 
 elif cmd == "enable":
+
     name = sys.argv[2]
-    config["providers"][name]["enabled"] = True
-    save(config)
-    print(name, "enabled")
+
+    if name in providers:
+        providers[name]["enabled"] = True
+        save(providers)
+        print(name, "enabled")
+
 
 elif cmd == "disable":
-    name = sys.argv[2]
-    config["providers"][name]["enabled"] = False
-    save(config)
-    print(name, "disabled")
 
-elif cmd == "model":
     name = sys.argv[2]
-    model = sys.argv[3]
-    config["providers"][name]["model"] = model
-    save(config)
-    print(name, "model set to", model)
+
+    if name in providers:
+        providers[name]["enabled"] = False
+        save(providers)
+        print(name, "disabled")
+
+
+elif cmd == "health":
+
+    for name, info in providers.items():
+        status = "online" if info["enabled"] else "disabled"
+        print(f"{name}: {status}")
