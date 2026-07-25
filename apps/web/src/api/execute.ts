@@ -1,18 +1,16 @@
-import { apiGet } from "./client"
+const API_URL =
+  import.meta.env.VITE_ROUTER_API_URL || "http://127.0.0.1:8000"
 
-export type ExecutionResult = {
-  success: boolean
-  route: {
-    provider: string
-    mode: string
-    decision: string
-  }
-  input: string
-  output: string
-}
+export async function executeRouter(message: string) {
+  const response = await fetch(`${API_URL}/execute`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message
+    })
+  })
 
-export function executeRequest(input: string) {
-  return apiGet<ExecutionResult>(
-    `/execute?input=${encodeURIComponent(input)}`
-  )
+  return response.json()
 }
