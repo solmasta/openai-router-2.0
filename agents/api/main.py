@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from agents.api.router_bridge import execute_router
+from agents.api.router_bridge import execute_router, router_info
 from agents.api.history import save_execution, get_history
 
 
@@ -52,6 +52,11 @@ class RouterHandler(BaseHTTPRequestHandler):
         elif self.path == "/history":
             self.send_json(
                 get_history()
+            )
+
+        elif self.path == "/router":
+            self.send_json(
+                router_info()
             )
 
         elif self.path == "/agent":
