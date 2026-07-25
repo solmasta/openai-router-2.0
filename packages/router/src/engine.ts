@@ -1,9 +1,19 @@
-import { listProviders } from "./registry"
+import { getProvider } from "./providers"
 
-export function routeRequest() {
-  const available = listProviders()
-    .filter((provider) => provider.status === "online")
-    .sort((a, b) => a.priority - b.priority)
+export async function executeRoute(
+  message: string,
+  providerId = "local"
+) {
+  const provider = getProvider(providerId)
 
-  return available[0] ?? null
+  if (!provider) {
+    throw new Error(
+      `Provider ${providerId} unavailable`
+    )
+  }
+
+  return {
+    provider: provider.id,
+    response: `Local provider response: ${message}`
+  }
 }

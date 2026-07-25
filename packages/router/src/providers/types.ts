@@ -1,14 +1,10 @@
-export type ProviderRequest = {
-  input: string
-}
+export type ProviderStatus =
+  | "online"
+  | "offline"
 
-export type ProviderResponse = {
-  provider: string
-  output: string
-}
-
-export interface ProviderAdapter {
+export type Provider = {
   id: string
   name: string
-  execute(request: ProviderRequest): Promise<ProviderResponse>
+  status: ProviderStatus
+  execute(message: string): Promise<string>
 }

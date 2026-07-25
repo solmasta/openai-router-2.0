@@ -1,16 +1,20 @@
 import { localProvider } from "./local"
-import type { ProviderAdapter } from "./types"
+import type { Provider } from "./types"
 
-const providers: ProviderAdapter[] = [
-  localProvider,
+const providers: Provider[] = [
+  localProvider
 ]
 
-export function getProviderAdapter(id: string) {
-  return providers.find(
-    (provider) => provider.id === id
-  )
+export function listProviders() {
+  return providers.map(provider => ({
+    id: provider.id,
+    name: provider.name,
+    status: provider.status
+  }))
 }
 
-export function listProviderAdapters() {
-  return providers
+export function getProvider(id: string) {
+  return providers.find(
+    provider => provider.id === id
+  )
 }

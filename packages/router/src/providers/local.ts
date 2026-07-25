@@ -1,19 +1,11 @@
-import type {
-  ProviderAdapter,
-  ProviderRequest,
-  ProviderResponse,
-} from "./types"
+import type { Provider } from "./types"
 
-export const localProvider: ProviderAdapter = {
+export const localProvider: Provider = {
   id: "local",
   name: "Local Provider",
+  status: "online",
 
-  async execute(
-    request: ProviderRequest
-  ): Promise<ProviderResponse> {
-    return {
-      provider: "local",
-      output: `Local provider processed: ${request.input}`,
-    }
-  },
+  async execute(message: string) {
+    return `Local provider response: ${message}`
+  }
 }
