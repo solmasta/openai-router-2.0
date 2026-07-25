@@ -1,23 +1,30 @@
 import json
+import subprocess
 from pathlib import Path
 
-ROUTER_STATE = Path("agents/router-state.json")
 
-def get_router_state():
-    if ROUTER_STATE.exists():
-        return json.loads(ROUTER_STATE.read_text())
+def execute_router(message: str):
+    """
+    Bridge placeholder for router execution.
+
+    Keeps the agent API independent while
+    the TypeScript router remains the source
+    of routing logic.
+    """
+
+    if "openai" in message.lower():
+        provider = "openai"
+
+    elif "mock" in message.lower():
+        provider = "mock"
+
+    else:
+        provider = "local"
+
 
     return {
-        "activeProvider": "local",
-        "mode": "automatic",
-    }
-
-
-def get_route():
-    state = get_router_state()
-
-    return {
-        "provider": state.get("activeProvider", "local"),
-        "mode": state.get("mode", "automatic"),
-        "decision": "primary",
+        "success": True,
+        "provider": provider,
+        "response":
+            f"{provider} provider received: {message}"
     }

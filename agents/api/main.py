@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from agents.api.router_bridge import execute_router
 
 
 from agents.router.client import execute_route
@@ -8,12 +9,7 @@ from agents.router.client import execute_route
 def execute_request(payload):
     message = payload.get("message", "")
 
-    result = execute_route(message)
-
-    return {
-        "success": True,
-        **result
-    }
+    return execute_router(message)
 
 
 class RouterHandler(BaseHTTPRequestHandler):
