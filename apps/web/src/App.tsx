@@ -38,6 +38,34 @@ function App() {
       </header>
 
 
+      <section className="card architecture">
+        <h2>
+          How Routing Works
+        </h2>
+
+        <pre>
+{`User Request
+     |
+     v
+Web Dashboard
+     |
+     v
+Router Agent
+     |
+     +-- Local Provider
+     |
+     +-- Mock Provider
+     |
+     +-- OpenAI Provider`}
+        </pre>
+
+        <p>
+          Requests enter through the dashboard,
+          the router selects a provider,
+          and the selected backend returns the result.
+        </p>
+      </section>
+
       <section className="cards">
 
         <InsightCard
