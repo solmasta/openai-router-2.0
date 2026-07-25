@@ -1,162 +1,72 @@
-
-import {
-  useRouterRefresh
-} from "./hooks/useRouterRefresh"
-
-import "./App.css"
-
 import Chat from "./components/Chat"
 import History from "./components/History"
-import ProviderControl from "./components/ProviderControl"
 import Metrics from "./components/Metrics"
-import InsightCard from "./components/InsightCard"
+import ProviderControl from "./components/ProviderControl"
+import AdminPanel from "./components/AdminPanel"
 
+
+function InsightCard(
+  {
+    title,
+    description,
+    children
+  }: {
+    title: string
+    description: string
+    children: React.ReactNode
+  }
+) {
+
+  return (
+    <section className="card">
+
+      <h2>
+        {title}
+      </h2>
+
+      <p>
+        {description}
+      </p>
+
+      {children}
+
+    </section>
+  )
+}
 
 
 function App() {
 
-  const data =
-    useRouterRefresh(5000)
-
   return (
-    <main className="dashboard">
 
-      <header className="hero">
-        <h1>
-          OpenAI Router 2.0
-        </h1>
+    <main>
 
-        <p>
-          AI routing control center
-        </p>
-
-        <p className="description">
-          Manage AI providers, test routing,
-          monitor agents, and observe system health
-          from one dashboard.
-        </p>
-      </header>
-
-
-      <section className="card architecture">
-        <h2>
-          How Routing Works
-        </h2>
-
-        <pre>
-{`User Request
-     |
-     v
-Web Dashboard
-     |
-     v
-Router Agent
-     |
-     +-- Local Provider
-     |
-     +-- Mock Provider
-     |
-     +-- OpenAI Provider`}
-        </pre>
-
-        <p>
-          Requests enter through the dashboard,
-          the router selects a provider,
-          and the selected backend returns the result.
-        </p>
-      </section>
-
-      <section className="cards">
-
-        <InsightCard
-          title="Router"
-          description="The router decides where AI requests are sent. It manages provider selection and request flow."
-        >
-          <p>
-            Status:
-            {" "}
-            {data?.router.online
-              ? "Online"
-              : "Offline"}
-          </p>
-
-          <p>
-            Service:
-            {" "}
-            {data?.router.service ??
-              "loading"}
-          </p>
-        </InsightCard>
-
-
-        <InsightCard
-          title="Agent"
-          description="Agents are automated workers that execute tasks through the routing system."
-        >
-          <p>
-            Status:
-            {" "}
-            {data?.agent.online
-              ? "Online"
-              : "Offline"}
-          </p>
-
-          <p>
-            Agent:
-            {" "}
-            {data?.agent.agent ??
-              "loading"}
-          </p>
-        </InsightCard>
-
-
-        <InsightCard
-          title="Providers"
-          description="Providers are AI backends available to handle requests."
-        >
-          {data?.providers?.length
-            ? data.providers.map(
-                provider => (
-                  <p key={provider.id}>
-                    {provider.name}
-                    {" "}
-                    -
-                    {" "}
-                    {provider.status}
-                  </p>
-                )
-              )
-            :
-              <p>
-                No providers detected
-              </p>
-          }
-        </InsightCard>
-
-      </section>
+      <h1>
+        OpenAI Router 2.0
+      </h1>
 
 
       <InsightCard
         title="Router Chat"
-        description="Send a test request through the router to verify your AI pipeline."
+        description="Send requests through configured AI providers."
       >
         <Chat />
       </InsightCard>
 
 
       <InsightCard
-        title="Execution History"
-        description="Review previous requests and responses for debugging and auditing."
+        title="Provider Control"
+        description="Select and test AI providers."
       >
-        <History />
+        <ProviderControl />
       </InsightCard>
 
 
       <InsightCard
-        title="Provider Control"
-        description="Choose which AI provider receives a test request."
+        title="History"
+        description="Review previous router executions."
       >
-        <ProviderControl />
+        <History />
       </InsightCard>
 
 
@@ -168,8 +78,18 @@ Router Agent
       </InsightCard>
 
 
+      <InsightCard
+        title="Admin Center"
+        description="Monitor router status, providers, and system health."
+      >
+        <AdminPanel />
+      </InsightCard>
+
+
     </main>
+
   )
 }
+
 
 export default App
