@@ -35,7 +35,7 @@ return (
 
 <h2>
 Router Intelligence
-<Tooltip text="How the router is scoring each provider to decide who gets picked next when Auto Routing is used. Higher score and lower latency make a provider more likely to be chosen." />
+<Tooltip text="Auto Routing still prefers providers in a fixed order (OpenAI, then Local, then Mock), but skips one that's healthy on paper yet failing more than half its recent requests, falling through to the next in line." />
 </h2>
 
 
