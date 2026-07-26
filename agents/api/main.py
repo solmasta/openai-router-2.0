@@ -238,7 +238,7 @@ class RouterHandler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     init_db()
 
-server = HTTPServer(
+    server = HTTPServer(
         ("127.0.0.1", 8000),
         RouterHandler
     )
