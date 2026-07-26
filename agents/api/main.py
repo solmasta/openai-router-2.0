@@ -5,6 +5,7 @@ from agents.api.auth import verify_key
 from agents.api.router_bridge import execute_router, router_info
 from agents.api.provider_registry import list_providers
 from agents.api.history import save_execution, get_history
+from agents.api.provider_intelligence import get as provider_intelligence
 from agents.api.metrics import record_request, get_metrics
 from agents.api.streaming import stream_text
 
@@ -72,6 +73,9 @@ class RouterHandler(BaseHTTPRequestHandler):
             self.send_json(
                 get_history()
             )
+
+        elif self.path == "/intelligence":
+            self.send_json(provider_intelligence())
 
         elif self.path == "/router":
             self.send_json(
