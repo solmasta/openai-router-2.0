@@ -1,7 +1,14 @@
+import Intelligence from "./components/Intelligence"
+import Providers from "./components/Providers"
+
 import Chat from "./components/Chat"
+
 import History from "./components/History"
+
 import Metrics from "./components/Metrics"
+
 import ProviderControl from "./components/ProviderControl"
+
 import AdminPanel from "./components/AdminPanel"
 
 
@@ -86,7 +93,13 @@ function App() {
       </InsightCard>
 
 
-    </main>
+    
+<Providers />
+
+<Intelligence />
+
+</main>
+
 
   )
 }
