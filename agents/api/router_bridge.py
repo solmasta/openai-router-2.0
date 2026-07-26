@@ -4,24 +4,56 @@ from agents.api.provider_registry import (
     PROVIDERS
 )
 
+from agents.api.provider_intelligence import get as get_intelligence
+
+
+# Preferred order when everything looks equally trustworthy.
+PRIORITY = [
+    "openai",
+    "local",
+    "mock"
+]
+
+# Below this many attempts we don't have enough signal to judge a
+# provider, so it keeps its place in the priority order.
+MIN_SAMPLE = 3
+
+# A provider failing more often than this, once it has enough
+# samples, is skipped in favor of the next one in priority order.
+FAILURE_THRESHOLD = 0.5
+
+
+def is_reliable(stats):
+
+    if not stats or stats.get("requests", 0) < MIN_SAMPLE:
+        return True
+
+    failure_rate = (
+        stats.get("failure", 0) / stats["requests"]
+    )
+
+    return failure_rate <= FAILURE_THRESHOLD
+
 
 def choose_provider():
 
-    # Preferred order
-    priority = [
-        "openai",
-        "local",
-        "mock"
+    healthy = [
+        name for name in PRIORITY
+        if PROVIDERS.get(name) and PROVIDERS[name]["health"]()
     ]
 
-    for name in priority:
+    if not healthy:
+        return "local"
 
-        provider = PROVIDERS.get(name)
+    intelligence = get_intelligence()
 
-        if provider and provider["health"]():
+    for name in healthy:
+        if is_reliable(intelligence.get(name)):
             return name
 
-    return "local"
+    # Nothing looks reliable - a healthy provider still beats none,
+    # so fall back to the top of the priority order anyway.
+    return healthy[0]
 
 
 def execute_router(
