@@ -1,3 +1,4 @@
+import ActivityFeed from "./components/ActivityFeed"
 import Intelligence from "./components/Intelligence"
 import Providers from "./components/Providers"
 
@@ -98,7 +99,11 @@ function App() {
 
 <Intelligence />
 
+
+<ActivityFeed />
+
 </main>
+
 
 
   )

@@ -1,146 +1,53 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-ROOT="$(cd "$(dirname "$0")" && pwd)"
-LOG="$ROOT/logs/router.log"
+CMD=$1
 
-start(){
-
-echo "Starting API"
-
-python -m agents.api.main >> "$LOG" 2>&1 &
-
-
-sleep 2
-
-
-echo "Starting dashboard"
-
-pnpm --filter web dev >> "$LOG" 2>&1 &
-
-
-echo "Router started"
-
-}
-
-
-
-stop(){
-
-pkill -f "agents.api.main" || true
-pkill -f "vite" || true
-
-echo "Router stopped"
-
-}
-
-
-
-status(){
-
-echo "--- API ---"
-
-curl -s http://127.0.0.1:8000/status || echo offline
-
-
-echo
-
-echo "--- Router ---"
-
-curl -s http://127.0.0.1:8000/router || true
-
-}
-
-
-
-doctor(){
-
-echo "Checking system..."
-
-python --version
-node --version
-pnpm --version
-
-
-echo
-
-echo "API:"
-
-curl -s http://127.0.0.1:8000/status || true
-
-
-echo
-
-echo "Build:"
-
-pnpm --filter web build
-
-}
-
-
-
-logs(){
-
-tail -f "$LOG"
-
-}
-
-
-
-update(){
-
-git pull origin main
-pnpm install
-pnpm --filter web build
-
-}
-
-
-
-case "$1" in
+case "$CMD" in
 
 start)
-start
+    echo "Starting API..."
+    pkill -f "agents.api.main" || true
+    python -m agents.api.main &
+    sleep 2
+    echo "Starting dashboard..."
+    pnpm --filter web dev
 ;;
 
 stop)
-stop
+    echo "Stopping services..."
+    pkill -f "agents.api.main" || true
+    pkill -f vite || true
 ;;
 
 restart)
-stop
-sleep 2
-start
-;;
-
-status)
-status
-;;
-
-backup)
-./scripts/backup.sh
+    $0 stop
+    sleep 2
+    $0 start
 ;;
 
 doctor)
-doctor
+    echo "=== Router Health ==="
+    curl -s http://127.0.0.1:8000/status || true
+    echo
+    curl -s http://127.0.0.1:8000/router || true
 ;;
 
-logs)
-logs
+build)
+    pnpm --filter web build
 ;;
 
-update)
-update
+backup)
+    ./scripts/backup.sh
 ;;
 
 *)
-echo "Commands:"
-echo "router start"
-echo "router stop"
-echo "router restart"
-echo "router status"
-echo "router doctor"
-echo "router logs"
-echo "router update"
+    echo "OpenAI Router Commands:"
+    echo " start"
+    echo " stop"
+    echo " restart"
+    echo " doctor"
+    echo " build"
+    echo " backup"
 ;;
 
 esac

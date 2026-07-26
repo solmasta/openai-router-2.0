@@ -5,11 +5,11 @@ const API =
 
 export async function getEvents(){
 
- const r =
+ const response =
  await fetch(
   `${API}/events`
  )
 
- return r.json()
+ return response.json()
 
 }
