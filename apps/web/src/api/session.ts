@@ -28,7 +28,7 @@ export function clearToken() {
 }
 
 
-export function authHeaders() {
+export function authHeaders(): Record<string, string> {
 
   const token =
     getToken()
