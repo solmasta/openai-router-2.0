@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from agents.api.realtime import get_events
 import json
 from agents.api.database.db import init_db
+from agents.api.database.history_store import get_requests
 from agents.api.session import login, verify_token
 from agents.api.auth import verify_key
 from agents.api.router_bridge import execute_router, router_info
