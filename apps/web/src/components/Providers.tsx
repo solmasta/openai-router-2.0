@@ -3,6 +3,8 @@ useEffect,
 useState
 } from "react"
 
+import Tooltip from "./Tooltip"
+
 
 const API =
 import.meta.env.VITE_ROUTER_API_URL ||
@@ -33,8 +35,12 @@ return (
 
 <h2>
 Providers
+<Tooltip text="Every AI backend the router is configured to use and whether it's currently reachable. Compare against Provider Control above to actually test one." />
 </h2>
 
+<p className="description">
+Live availability of each configured AI backend.
+</p>
 
 {
 providers.map(

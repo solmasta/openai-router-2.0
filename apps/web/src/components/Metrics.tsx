@@ -11,6 +11,8 @@ import type {
   Metrics
 } from "../api/metrics"
 
+import Tooltip from "./Tooltip"
+
 
 export default function MetricsCard() {
 
@@ -46,13 +48,13 @@ export default function MetricsCard() {
         Metrics
       </h2>
 
-      <p>
+      <p title="Total requests the router has handled since it last started, across all providers.">
         Requests:
         {" "}
         {metrics?.requests ?? 0}
       </p>
 
-      <p>
+      <p title="How long the router process has been running without a restart.">
         Uptime:
         {" "}
         {Math.round(
@@ -64,6 +66,7 @@ export default function MetricsCard() {
 
       <h3>
         Providers
+        <Tooltip text="How many of the requests above were handled by each provider." />
       </h3>
 
       {Object.entries(

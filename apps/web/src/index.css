@@ -109,3 +109,151 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.dashboard {
+  padding: 32px;
+  text-align: left;
+}
+
+.dashboard header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.cards {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-bottom: 20px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+
+.cards .card {
+  margin-bottom: 0;
+}
+
+.card h2 {
+  display: flex;
+  align-items: center;
+}
+
+.card h3 {
+  display: flex;
+  align-items: center;
+}
+
+.card p,
+.card small {
+  color: var(--text);
+}
+
+.card p.description {
+  margin-bottom: 12px;
+}
+
+.card select,
+.card input,
+.card button {
+  font: inherit;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  margin: 4px 8px 4px 0;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.card button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.card button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.card pre {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 12px;
+  overflow-x: auto;
+  font-size: 13px;
+  text-align: left;
+}
+
+.card hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 12px 0;
+}
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.tooltip-trigger {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font: 11px/1 var(--sans);
+  font-style: italic;
+}
+
+.tooltip-bubble {
+  position: absolute;
+  bottom: 130%;
+  left: 0;
+  background: var(--text-h);
+  color: var(--bg);
+  font-size: 13px;
+  line-height: 140%;
+  letter-spacing: normal;
+  padding: 8px 10px;
+  border-radius: 6px;
+  width: max-content;
+  max-width: 240px;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+  z-index: 20;
+  box-shadow: var(--shadow);
+}
+
+.tooltip-trigger:hover + .tooltip-bubble,
+.tooltip-trigger:focus-visible + .tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+}

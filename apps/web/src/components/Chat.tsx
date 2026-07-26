@@ -6,6 +6,8 @@ import {
   streamRouter
 } from "../api/stream"
 
+import Tooltip from "./Tooltip"
+
 
 export default function Chat() {
 
@@ -67,6 +69,7 @@ export default function Chat() {
 
       <h2>
         Router Chat
+        <Tooltip text="Always streams through the local provider - it doesn't let you pick one. Use Provider Control instead to test a specific provider." />
       </h2>
 
       <p>

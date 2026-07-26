@@ -6,6 +6,8 @@ import {
   executeRouter
 } from "../api/execute"
 
+import Tooltip from "./Tooltip"
+
 const providers = [
   {
     id: "auto",
@@ -77,6 +79,7 @@ export default function ProviderControl() {
 
       <h2>
         Provider Control
+        <Tooltip text="Force a test request to a specific provider instead of letting the router auto-select one. Useful for confirming a provider is reachable and working." />
       </h2>
 
       <p>
@@ -85,6 +88,7 @@ export default function ProviderControl() {
 
 
       <select
+        aria-label="Provider"
         value={provider}
         onChange={
           e => setProvider(e.target.value)
@@ -124,7 +128,7 @@ export default function ProviderControl() {
       </button>
 
 
-      <p>
+      <p title="Mode: whether the router used Auto Routing or a forced provider. Provider: which backend actually handled the request.">
         {route}
       </p>
 
