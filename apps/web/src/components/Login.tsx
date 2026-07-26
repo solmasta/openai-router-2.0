@@ -28,22 +28,34 @@ export default function Login({
 
   async function submit() {
 
-    const result =
-      await login(
-        username,
-        password
-      )
+    setError("")
 
+    try {
 
-    if (result.success) {
+      const result =
+        await login(
+          username,
+          password
+        )
 
-      onLogin()
+      if (result.success) {
 
-    } else {
+        onLogin()
+
+      } else {
+
+        setError(
+          result.error ||
+          "Login failed"
+        )
+
+      }
+
+    } catch {
 
       setError(
-        result.error ||
-        "Login failed"
+        "Could not reach the router backend. " +
+        "Check that it's running and reachable at the configured API URL."
       )
 
     }
