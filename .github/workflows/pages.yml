@@ -38,6 +38,8 @@ jobs:
         run: pnpm install
 
       - name: Build
+        env:
+          VITE_ROUTER_API_URL: ${{ vars.ROUTER_API_URL }}
         run: pnpm build
 
       - name: Upload Pages artifact

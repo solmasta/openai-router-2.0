@@ -1,18 +1,16 @@
+# The dashboard is deployed separately via GitHub Pages
+# (.github/workflows/pages.yml), so only the backend needs hosting here.
+# After this service deploys, set its public URL as the
+# ROUTER_API_URL repository variable in GitHub Actions so the Pages
+# build points at it instead of localhost.
 services:
   - type: web
     name: openai-router-agent
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r agents/requirements.txt
     startCommand: python -m agents.api.main
     envVars:
+      - key: HOST
+        value: 0.0.0.0
       - key: PORT
         value: 8000
-
-  - type: web
-    name: openai-router-dashboard
-    runtime: node
-    buildCommand: pnpm install && pnpm build:web
-    startCommand: pnpm --filter web dev --host 0.0.0.0
-    envVars:
-      - key: VITE_ROUTER_API_URL
-        value: https://openai-router-agent.example.com
