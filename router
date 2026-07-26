@@ -116,6 +116,10 @@ status)
 status
 ;;
 
+backup)
+./scripts/backup.sh
+;;
+
 doctor)
 doctor
 ;;

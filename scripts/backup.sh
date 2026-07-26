@@ -1,11 +1,15 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+DATE=$(date +%Y%m%d-%H%M%S)
 
 mkdir -p backups
 
 tar -czf \
-"backups/router-$(date +%Y%m%d-%H%M%S).tar.gz" \
-agents config apps
+"backups/router-$DATE.tar.gz" \
+agents \
+apps \
+config \
+.env.example
 
-echo "Backup complete"
+echo "Backup created:"
+echo backups/router-$DATE.tar.gz

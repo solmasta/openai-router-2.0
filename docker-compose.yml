@@ -1,12 +1,10 @@
 services:
-  router:
-    build: .
-    container_name: openai-router-2.0
+
+  router-api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
     ports:
       - "8000:8000"
-      - "5173:5173"
     environment:
-      - HOST=0.0.0.0
-      - PORT=8000
-      - DEFAULT_PROVIDER=local
-    restart: unless-stopped
+      - OPENAI_API_KEY=${OPENAI_API_KEY}

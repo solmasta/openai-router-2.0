@@ -1,24 +1,37 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-echo "=== OpenAI Router Doctor ==="
+echo "=== Router Doctor ==="
 
-echo ""
+echo
+
 echo "Python:"
 python --version
 
-echo ""
+echo
+
+echo "Node:"
+node --version
+
+echo
+
 echo "pnpm:"
 pnpm --version
 
-echo ""
+echo
+
 echo "API:"
-curl -s http://127.0.0.1:8000/status || echo "offline"
+curl -s http://127.0.0.1:8000/status || echo "API offline"
 
-echo ""
-echo "Port:"
-ss -tln | grep 8000 || echo "8000 not listening"
+echo
 
-echo ""
-echo "Files:"
-test -f config/router.json && echo "config OK" || echo "config missing"
+echo "Providers:"
+curl -s http://127.0.0.1:8000/providers || true
 
+echo
+
+echo "Build:"
+pnpm --filter web build
+
+echo
+
+echo "Complete"
