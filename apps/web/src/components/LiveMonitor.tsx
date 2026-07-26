@@ -7,6 +7,8 @@ import {
   getLiveEvents
 } from "../api/live"
 
+import Tooltip from "./Tooltip"
+
 
 export default function LiveMonitor(){
 
@@ -48,6 +50,7 @@ return (
 
 <h2>
 Live Router Monitor
+<Tooltip text="Same idea as the Activity Feed above, but polled every 3 seconds for a closer-to-real-time view." />
 </h2>
 
 

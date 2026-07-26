@@ -7,6 +7,8 @@ import {
  getEvents
 } from "../api/events"
 
+import Tooltip from "./Tooltip"
+
 
 export default function ActivityFeed(){
 
@@ -44,6 +46,7 @@ return (
 
 <h2>
 Activity Feed
+<Tooltip text="A general log of router events, newest first, polled every 5 seconds. See Live Router Monitor below for a faster-refreshing version of the same kind of feed." />
 </h2>
 
 

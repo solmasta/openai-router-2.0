@@ -11,6 +11,8 @@ import type {
   HistoryItem
 } from "../api/history"
 
+import Tooltip from "./Tooltip"
+
 
 export default function History() {
 
@@ -32,6 +34,7 @@ export default function History() {
 
       <h2>
         Router History
+        <Tooltip text="Past requests sent through the router, newest first. This loads once when the page opens - refresh the page to see requests sent since then." />
       </h2>
 
       {items.length === 0 && (
