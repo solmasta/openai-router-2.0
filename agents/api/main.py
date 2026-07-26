@@ -8,6 +8,7 @@ from agents.api.history import save_execution, get_history
 from agents.api.database_api import list_requests
 from agents.api.provider_intelligence import get as provider_intelligence
 from agents.api.metrics import record_request, get_metrics
+from agents.api.events import latest
 from agents.api.streaming import stream_text
 
 
@@ -85,6 +86,9 @@ class RouterHandler(BaseHTTPRequestHandler):
             self.send_json(
                 router_info()
             )
+
+        elif self.path == "/events":
+            self.send_json(latest())
 
         elif self.path == "/metrics":
 
