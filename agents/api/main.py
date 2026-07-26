@@ -87,6 +87,9 @@ class RouterHandler(BaseHTTPRequestHandler):
                 router_info()
             )
 
+        elif self.path == "/live-events":
+            self.send_json(get_events())
+
         elif self.path == "/events":
             self.send_json(latest())
 
