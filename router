@@ -1,98 +1,142 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
+LOG="$ROOT/logs/router.log"
+
+start(){
+
+echo "Starting API"
+
+python -m agents.api.main >> "$LOG" 2>&1 &
+
+
+sleep 2
+
+
+echo "Starting dashboard"
+
+pnpm --filter web dev >> "$LOG" 2>&1 &
+
+
+echo "Router started"
+
+}
+
+
+
+stop(){
+
+pkill -f "agents.api.main" || true
+pkill -f "vite" || true
+
+echo "Router stopped"
+
+}
+
+
+
+status(){
+
+echo "--- API ---"
+
+curl -s http://127.0.0.1:8000/status || echo offline
+
+
+echo
+
+echo "--- Router ---"
+
+curl -s http://127.0.0.1:8000/router || true
+
+}
+
+
+
+doctor(){
+
+echo "Checking system..."
+
+python --version
+node --version
+pnpm --version
+
+
+echo
+
+echo "API:"
+
+curl -s http://127.0.0.1:8000/status || true
+
+
+echo
+
+echo "Build:"
+
+pnpm --filter web build
+
+}
+
+
+
+logs(){
+
+tail -f "$LOG"
+
+}
+
+
+
+update(){
+
+git pull origin main
+pnpm install
+pnpm --filter web build
+
+}
+
+
 
 case "$1" in
 
 start)
-    "$ROOT/scripts/service.sh" start
-    ;;
+start
+;;
 
 stop)
-    "$ROOT/scripts/service.sh" stop
-    ;;
+stop
+;;
 
 restart)
-    "$ROOT/scripts/service.sh" restart
-    ;;
+stop
+sleep 2
+start
+;;
 
 status)
-    "$ROOT/scripts/service.sh" status
-    ;;
+status
+;;
 
 doctor)
-    "$ROOT/scripts/doctor.sh"
-    ;;
-
-update)
-    "$ROOT/scripts/update.sh"
-    ;;
-
-backup)
-    "$ROOT/scripts/backup.sh"
-    ;;
-
-deploy)
-    "$ROOT/scripts/deploy.sh"
-    ;;
-
-config)
-    python3 "$ROOT/configctl.py" "${@:2}"
-    ;;
-
-routes)
-    python3 "$ROOT/routectl.py" "${@:2}"
-    ;;
+doctor
+;;
 
 logs)
-    tail -f "$ROOT/router.log"
-    ;;
+logs
+;;
 
-providers)
-    python3 "$ROOT/providerctl.py" "${@:2}"
-    ;;
-
-keys)
-    python3 "$ROOT/keyctl.py" "${@:2}"
-    ;;
-
-limits)
-    python3 "$ROOT/limitctl.py" "${@:2}"
-    ;;
-
-install)
-    "$ROOT/scripts/install.sh"
-    ;;
+update)
+update
+;;
 
 *)
-echo "
-OpenAI Router 2.0 Control Center
-
-Usage:
-
- router start
- router stop
- router restart
- router status
- router doctor
- router update
- router backup
- router logs
-
-Provider:
- router providers list
-
-API Keys:
- router keys list
- router keys create NAME
-
-Limits:
- router limits usage
- router limits set USER NUMBER
-
-Install:
- router install
-"
+echo "Commands:"
+echo "router start"
+echo "router stop"
+echo "router restart"
+echo "router status"
+echo "router doctor"
+echo "router logs"
+echo "router update"
 ;;
 
 esac
