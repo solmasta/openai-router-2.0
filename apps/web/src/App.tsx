@@ -1,3 +1,4 @@
+import Version from "./components/Version"
 import LiveMonitor from "./components/LiveMonitor"
 import ActivityFeed from "./components/ActivityFeed"
 import Intelligence from "./components/Intelligence"
@@ -49,6 +50,7 @@ function App() {
   return (
 
     <main>
+<Version />
 
       <h1>
         OpenAI Router 2.0
