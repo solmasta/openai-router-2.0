@@ -1,4 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from agents.api.realtime import get_events
 import json
 from agents.api.session import login, verify_token
 from agents.api.auth import verify_key
