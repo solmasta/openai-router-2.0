@@ -50,28 +50,30 @@ Object.entries(data).map(
 </h3>
 
 
-<p title="Total requests routed to this provider.">
+<p>
 Requests: {value.requests}
 </p>
 
 
-<p title="Requests this provider completed successfully.">
+<p>
 Success: {value.success}
 </p>
 
 
-<p title="Requests this provider failed to complete.">
+<p>
 Failures: {value.failure}
 </p>
 
 
-<p title="The router's internal ranking for this provider - higher means it's preferred for Auto Routing.">
+<p>
 Score: {value.score}
+<Tooltip text="The router's internal ranking for this provider - higher means it's preferred for Auto Routing." />
 </p>
 
 
-<p title="Average response time for this provider, in seconds.">
+<p>
 Latency: {Number(value.latency).toFixed(3)}s
+<Tooltip text="Average response time for this provider, in seconds. Lower latency raises its score." />
 </p>
 
 </div>
