@@ -1,3 +1,4 @@
+import LiveMonitor from "./components/LiveMonitor"
 import ActivityFeed from "./components/ActivityFeed"
 import Intelligence from "./components/Intelligence"
 import Providers from "./components/Providers"
@@ -102,7 +103,11 @@ function App() {
 
 <ActivityFeed />
 
+
+<LiveMonitor />
+
 </main>
+
 
 
 
