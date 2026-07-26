@@ -40,3 +40,4 @@ __pycache__/
 *.pyc
 
 ~/openai-router-2.0 && git add apps/web/src/api/router.ts apps/web/src/App.tsx apps/web/.env.example package.json && git commit -m Connect.env
+.router.pid
