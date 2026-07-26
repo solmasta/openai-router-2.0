@@ -1,30 +1,25 @@
 # Changelog
 
-## 2.0.0
+## v3.0.0
 
 ### Added
-- AI provider routing
-- Local provider support
-- Mock provider testing
-- OpenAI provider integration foundation
-- Provider registry
-- Request history
+
+- Intelligent routing foundation
+- Provider scoring foundation
+- Failover routing foundation
 - Metrics foundation
-- Provider intelligence scoring
-- Live events endpoint
-- React dashboard
-- GitHub Pages deployment
-- Unified router command system
-- Installer and health checks
+- Cost tracking foundation
+- Agent registry foundation
+- Workflow registry foundation
+- Plugin registry foundation
+- Organization foundation
+- Security foundation
+- Audit and configuration foundations
+- Dashboard enhancements
+- Release tooling
 
-### Fixed
-- GitHub Pages deployment workflow
-- Realtime events endpoint
-- Duplicate dashboard component injection
-- API process startup handling
+### Infrastructure
 
-### Developer Experience
-- Termux compatible workflow
-- Single command installer
-- Router doctor diagnostics
-- Build verification
+- Database foundation
+- Production configuration templates
+- Router diagnostics tooling
