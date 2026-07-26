@@ -267,12 +267,17 @@ class RouterHandler(BaseHTTPRequestHandler):
             })
 
 if __name__ == "__main__":
+    import os
+
     init_db()
 
+    host = os.getenv("HOST", "127.0.0.1")
+    port = int(os.getenv("PORT", "8000"))
+
     server = HTTPServer(
-        ("127.0.0.1", 8000),
+        (host, port),
         RouterHandler
     )
 
-    print("OpenAI Router Agent running on :8000")
+    print(f"OpenAI Router Agent running on {host}:{port}")
     server.serve_forever()
