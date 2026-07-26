@@ -1,4 +1,4 @@
-import { authHeaders } from "./auth"
+import { authHeaders } from "./session"
 
 const API_URL =
   import.meta.env.VITE_ROUTER_API_URL ||

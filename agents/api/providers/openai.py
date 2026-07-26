@@ -1,5 +1,7 @@
+import json
 import os
-import httpx
+import urllib.error
+import urllib.request
 
 
 def health():
@@ -23,20 +25,21 @@ def run(message: str):
         }
 
     try:
-        response = httpx.post(
+        request = urllib.request.Request(
             "https://api.openai.com/v1/responses",
+            data=json.dumps({
+                "model": "gpt-5-mini",
+                "input": message
+            }).encode(),
             headers={
                 "Authorization": f"Bearer {key}",
                 "Content-Type": "application/json"
             },
-            json={
-                "model": "gpt-5-mini",
-                "input": message
-            },
-            timeout=30
+            method="POST"
         )
 
-        data = response.json()
+        with urllib.request.urlopen(request, timeout=30) as response:
+            data = json.loads(response.read())
 
         if "output" in data:
             text = data["output"][0]["content"][0]["text"]
@@ -47,6 +50,13 @@ def run(message: str):
             "provider": "openai",
             "success": True,
             "response": text
+        }
+
+    except urllib.error.HTTPError as e:
+        return {
+            "provider": "openai",
+            "success": False,
+            "response": f"{e.code} {e.reason}: {e.read().decode(errors='replace')}"
         }
 
     except Exception as e:

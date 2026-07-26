@@ -44,12 +44,15 @@ def execute_router(
 
     if isinstance(result, dict):
         response = result.get("response", "")
+        success = result.get("success", True)
     else:
         response = result
+        success = True
 
     return {
         "provider": selected,
         "response": response,
+        "success": success,
         "route": "auto"
             if provider == "auto"
             else "manual"
