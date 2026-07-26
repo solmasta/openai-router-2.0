@@ -2,31 +2,57 @@
 
 set -e
 
-echo "Installing OpenAI Router 2.0"
+ROOT="$(cd "$(dirname "$0")" && pwd)"
 
+echo "======================================"
+echo " OpenAI Router 2.0 Final Installer"
+echo "======================================"
+
+cd "$ROOT"
+
+echo "[1/6] Installing dependencies"
 pnpm install
 
-if [ ! -f .env ]; then
+echo "[2/6] Creating environment"
 
+if [ ! -f .env ]; then
 cat > .env <<ENV
 VITE_ROUTER_API_URL=http://127.0.0.1:8000
+VITE_ROUTER_API_KEY=dev-router-key
 ENV
-
 fi
+
+
+echo "[3/6] Building dashboard"
+
+pnpm --filter web build
+
+
+echo "[4/6] Checking router tools"
 
 chmod +x router
+chmod +x router-control.sh
+chmod +x router-doctor.sh
 
-echo ""
-echo "Checking existing API..."
 
-if curl -s http://127.0.0.1:8000/status >/dev/null; then
-    echo "API already running on port 8000"
-else
-    echo "API not running"
-fi
+echo "[5/6] Testing API"
 
-echo ""
-echo "Install complete"
-echo "Run:"
+./router start || true
+
+sleep 3
+
+curl -s http://127.0.0.1:8000/status || true
+
+echo
+
+
+echo "[6/6] Complete"
+
+echo
+echo "Commands:"
 echo "./router start"
+echo "./router stop"
+echo "./router restart"
+echo "./router doctor"
+echo "./router build"
 

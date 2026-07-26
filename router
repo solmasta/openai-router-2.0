@@ -1,53 +1,54 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-CMD=$1
+ROOT="$(cd "$(dirname "$0")" && pwd)"
 
-case "$CMD" in
+case "$1" in
 
 start)
-    echo "Starting API..."
-    pkill -f "agents.api.main" || true
-    python -m agents.api.main &
-    sleep 2
-    echo "Starting dashboard..."
-    pnpm --filter web dev
-;;
+    "$ROOT/router-control.sh" start
+    ;;
 
 stop)
-    echo "Stopping services..."
-    pkill -f "agents.api.main" || true
-    pkill -f vite || true
-;;
+    "$ROOT/router-control.sh" stop
+    ;;
 
 restart)
-    $0 stop
-    sleep 2
-    $0 start
-;;
+    "$ROOT/router-control.sh" restart
+    ;;
 
 doctor)
-    echo "=== Router Health ==="
-    curl -s http://127.0.0.1:8000/status || true
-    echo
-    curl -s http://127.0.0.1:8000/router || true
-;;
+    "$ROOT/router-doctor.sh"
+    ;;
 
 build)
+    echo "Building dashboard..."
+    cd "$ROOT"
     pnpm --filter web build
-;;
+    ;;
 
-backup)
-    ./scripts/backup.sh
-;;
+deploy)
+    echo "Deploying..."
+    git add .
+    git commit -m "Router update" || true
+    git push origin main
+    ;;
+
+logs)
+    echo "Recent API logs:"
+    ps -ef | grep agents.api.main | grep -v grep || echo "Router not running"
+    ;;
 
 *)
-    echo "OpenAI Router Commands:"
-    echo " start"
-    echo " stop"
-    echo " restart"
-    echo " doctor"
-    echo " build"
-    echo " backup"
-;;
+    echo "OpenAI Router Control"
+    echo
+    echo "Commands:"
+    echo "  ./router start"
+    echo "  ./router stop"
+    echo "  ./router restart"
+    echo "  ./router doctor"
+    echo "  ./router build"
+    echo "  ./router deploy"
+    echo "  ./router logs"
+    ;;
 
 esac
