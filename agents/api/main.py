@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from agents.api.realtime import get_events
 import json
+import time
 from agents.api.database.db import init_db
 from agents.api.database.history_store import get_requests
 from agents.api.session import login, verify_token
@@ -10,6 +11,7 @@ from agents.api.provider_registry import list_providers
 from agents.api.history import save_execution, get_history
 from agents.api.database_api import list_requests
 from agents.api.provider_intelligence import get as provider_intelligence
+from agents.api.provider_intelligence import update as record_intelligence
 from agents.api.metrics import record_request, get_metrics
 from agents.api.events import latest
 from agents.api.streaming import stream_text
@@ -22,10 +24,14 @@ def execute_request(payload):
     message = payload.get("message", "")
     provider = payload.get("provider")
 
+    start = time.monotonic()
+
     result = execute_router(
         message,
         provider
     )
+
+    latency = time.monotonic() - start
 
     save_execution(
         message,
@@ -37,6 +43,12 @@ def execute_request(payload):
         result.get("provider")
     )
 
+    record_intelligence(
+        result.get("provider"),
+        result.get("success", True),
+        latency
+    )
+
     return result
 
 
@@ -44,20 +56,38 @@ class RouterHandler(BaseHTTPRequestHandler):
 
     def check_auth(self):
         if not verify_token(self.headers):
-            self.send_json({
-                "error": "unauthorized"
-            })
+            self.send_json(
+                {"error": "unauthorized"},
+                status=401
+            )
             return False
 
         return True
 
 
-    def send_json(self, data):
+    def send_cors_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, Authorization, X-API-Key"
+        )
+
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_cors_headers()
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+
+    def send_json(self, data, status=200):
         body = json.dumps(data).encode()
 
-        self.send_response(200)
+        self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
+        self.send_cors_headers()
         self.end_headers()
         self.wfile.write(body)
 
@@ -127,6 +157,7 @@ class RouterHandler(BaseHTTPRequestHandler):
             "Cache-Control",
             "no-cache"
         )
+        self.send_cors_headers()
         self.end_headers()
 
         for chunk in stream_text(text):

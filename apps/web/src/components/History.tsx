@@ -14,6 +14,11 @@ import type {
 import Tooltip from "./Tooltip"
 
 
+function asText(value: unknown): string {
+  return typeof value === "string" ? value : JSON.stringify(value)
+}
+
+
 export default function History() {
 
   const [items, setItems] =
@@ -51,15 +56,15 @@ export default function History() {
           <div key={index}>
 
             <strong>
-              {item.provider}
+              {asText(item.provider)}
             </strong>
 
             <p>
-              {item.message}
+              {asText(item.message)}
             </p>
 
             <small>
-              {item.response}
+              {asText(item.response)}
             </small>
 
           </div>

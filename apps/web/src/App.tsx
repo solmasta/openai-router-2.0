@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Version from './components/Version';
 import LiveMonitor from './components/LiveMonitor';
 import ActivityFeed from './components/ActivityFeed';
@@ -9,6 +10,10 @@ import Metrics from './components/Metrics';
 import ProviderControl from './components/ProviderControl';
 import AdminPanel from './components/AdminPanel';
 import Tooltip from './components/Tooltip';
+import Login from './components/Login';
+import ErrorBoundary from './components/ErrorBoundary';
+import { getToken, clearToken } from './api/session';
+import { getMetrics } from './api/metrics';
 
 function InsightCard({
   title,
@@ -28,17 +33,47 @@ function InsightCard({
         {tip && <Tooltip text={tip} />}
       </h2>
       <p className='description'>{description}</p>
-      {children}
+      <ErrorBoundary>{children}</ErrorBoundary>
     </section>
   );
 }
 
 function App() {
+  const [authed, setAuthed] = useState(() => Boolean(getToken()));
+
+  useEffect(() => {
+    if (!authed) return;
+
+    // The backend keeps session tokens in memory only, so a backend
+    // restart silently invalidates whatever token is still in
+    // localStorage. Confirm it still works before trusting it.
+    getMetrics().then(result => {
+      if ((result as { error?: string }).error === 'unauthorized') {
+        clearToken();
+        setAuthed(false);
+      }
+    });
+  }, [authed]);
+
+  if (!authed) {
+    return <Login onLogin={() => setAuthed(true)} />;
+  }
+
   return (
     <main className='dashboard'>
       <header>
         <h1>OpenAI Router 2.0</h1>
-        <Version />
+        <div>
+          <Version />
+          <button
+            onClick={() => {
+              clearToken();
+              setAuthed(false);
+            }}
+          >
+            Log out
+          </button>
+        </div>
       </header>
       <div className='cards'>
         <InsightCard
@@ -77,10 +112,10 @@ function App() {
           <AdminPanel />
         </InsightCard>
       </div>
-      <Providers />
-      <Intelligence />
-      <ActivityFeed />
-      <LiveMonitor />
+      <ErrorBoundary><Providers /></ErrorBoundary>
+      <ErrorBoundary><Intelligence /></ErrorBoundary>
+      <ErrorBoundary><ActivityFeed /></ErrorBoundary>
+      <ErrorBoundary><LiveMonitor /></ErrorBoundary>
     </main>
   );
 }
