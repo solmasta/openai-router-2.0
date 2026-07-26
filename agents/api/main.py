@@ -5,6 +5,7 @@ from agents.api.auth import verify_key
 from agents.api.router_bridge import execute_router, router_info
 from agents.api.provider_registry import list_providers
 from agents.api.history import save_execution, get_history
+from agents.api.database_api import list_requests
 from agents.api.provider_intelligence import get as provider_intelligence
 from agents.api.metrics import record_request, get_metrics
 from agents.api.streaming import stream_text
@@ -68,6 +69,9 @@ class RouterHandler(BaseHTTPRequestHandler):
                 list_providers()
             )
 
+
+        elif self.path == "/database-history":
+            self.send_json(list_requests())
 
         elif self.path == "/history":
             self.send_json(
