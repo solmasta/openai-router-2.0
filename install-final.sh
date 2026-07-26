@@ -16,6 +16,16 @@ fi
 
 chmod +x router
 
+echo ""
+echo "Checking existing API..."
+
+if curl -s http://127.0.0.1:8000/status >/dev/null; then
+    echo "API already running on port 8000"
+else
+    echo "API not running"
+fi
+
+echo ""
 echo "Install complete"
 echo "Run:"
 echo "./router start"
