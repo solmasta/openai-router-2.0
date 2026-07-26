@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from agents.api.realtime import get_events
 import json
+from agents.api.database.db import init_db
 from agents.api.session import login, verify_token
 from agents.api.auth import verify_key
 from agents.api.router_bridge import execute_router, router_info
@@ -234,7 +235,9 @@ class RouterHandler(BaseHTTPRequestHandler):
             })
 
 if __name__ == "__main__":
-    server = HTTPServer(
+    init_db()
+
+server = HTTPServer(
         ("127.0.0.1", 8000),
         RouterHandler
     )
