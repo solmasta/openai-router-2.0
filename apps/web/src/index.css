@@ -233,7 +233,8 @@ code {
 .tooltip-bubble {
   position: absolute;
   bottom: 130%;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background: var(--text-h);
   color: var(--bg);
   font-size: 13px;
@@ -242,10 +243,9 @@ code {
   padding: 8px 10px;
   border-radius: 6px;
   width: max-content;
-  max-width: 240px;
+  max-width: min(240px, 80vw);
   text-align: left;
   opacity: 0;
-  visibility: hidden;
   transition: opacity 0.15s ease;
   pointer-events: none;
   z-index: 20;
@@ -255,5 +255,4 @@ code {
 .tooltip-trigger:hover + .tooltip-bubble,
 .tooltip-trigger:focus-visible + .tooltip-bubble {
   opacity: 1;
-  visibility: visible;
 }

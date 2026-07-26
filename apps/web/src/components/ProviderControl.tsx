@@ -128,8 +128,11 @@ export default function ProviderControl() {
       </button>
 
 
-      <p title="Mode: whether the router used Auto Routing or a forced provider. Provider: which backend actually handled the request.">
+      <p>
         {route}
+        {route && (
+          <Tooltip text="Mode: whether the router used Auto Routing or a forced provider. Provider: which backend actually handled the request." />
+        )}
       </p>
 
       <pre>

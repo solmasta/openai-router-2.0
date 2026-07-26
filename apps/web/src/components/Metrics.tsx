@@ -48,13 +48,13 @@ export default function MetricsCard() {
         Metrics
       </h2>
 
-      <p title="Total requests the router has handled since it last started, across all providers.">
+      <p>
         Requests:
         {" "}
         {metrics?.requests ?? 0}
       </p>
 
-      <p title="How long the router process has been running without a restart.">
+      <p>
         Uptime:
         {" "}
         {Math.round(
