@@ -1,11 +1,9 @@
-FROM node:20-bookworm
+FROM python:3.12-slim
 
 WORKDIR /app
 
 COPY . .
 
-RUN corepack enable && pnpm install
+RUN pip install --upgrade pip
 
-EXPOSE 5173 8000
-
-CMD ["bash", "start.sh"]
+CMD ["python","-m","agents.api.main"]
